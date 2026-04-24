@@ -9,6 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@wix/ecom": "^1.0.2024",
+    "@wix/redirects": "^1.0.112",
+    "@wix/sdk": "^1.21.6",
+    "@wix/stores": "^1.0.756",
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"
