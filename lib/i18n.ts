@@ -483,11 +483,11 @@ const PRODUCT_NAME_OVERRIDES: Record<Locale, Record<string, string>> = {
 
 export function translateProductName(
   locale: Locale,
-  slug: string | undefined,
-  original: string | undefined,
+  slug: string | null | undefined,
+  original: string | null | undefined,
 ): string | undefined {
-  if (!slug) return original;
-  return PRODUCT_NAME_OVERRIDES[locale]?.[slug] ?? original;
+  if (!slug) return original ?? undefined;
+  return PRODUCT_NAME_OVERRIDES[locale]?.[slug] ?? original ?? undefined;
 }
 
 /**

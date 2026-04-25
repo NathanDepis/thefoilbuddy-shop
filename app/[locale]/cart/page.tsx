@@ -11,11 +11,15 @@ export const dynamic = 'force-dynamic';
 
 async function fetchCart(locale: Locale) {
   const { client, hasTokens } = await getWixClient(locale);
-  if (!hasTokens) return null;
+  if (!hasTokens) return { cart: null, totals: null };
   try {
-    return await client.currentCart.getCurrentCart();
+    const [cart, totals] = await Promise.all([
+      client.currentCart.getCurrentCart(),
+      client.currentCart.estimateCurrentCartTotals().catch(() => null),
+    ]);
+    return { cart, totals };
   } catch {
-    return null;
+    return { cart: null, totals: null };
   }
 }
 
@@ -37,10 +41,11 @@ export default async function CartPage({
   if (!isLocale(locale)) notFound();
   const d = t(locale);
 
-  const cart = await fetchCart(locale);
+  const { cart, totals } = await fetchCart(locale);
   const items = cart?.lineItems ?? [];
   const subtotal =
-    cart?.subtotal?.formattedConvertedAmount ?? cart?.subtotal?.formattedAmount;
+    totals?.priceSummary?.subtotal?.formattedConvertedAmount ??
+    totals?.priceSummary?.subtotal?.formattedAmount;
 
   return (
     <main className="min-h-screen bg-[#091E2C] text-white">
