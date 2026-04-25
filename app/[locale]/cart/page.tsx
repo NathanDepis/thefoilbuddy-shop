@@ -45,6 +45,8 @@ export default async function CartPage({
   const { cart, totals } = await fetchCart(locale);
   const items = cart?.lineItems ?? [];
   const subtotal =
+    totals?.priceSummary?.total?.formattedConvertedAmount ??
+    totals?.priceSummary?.total?.formattedAmount ??
     totals?.priceSummary?.subtotal?.formattedConvertedAmount ??
     totals?.priceSummary?.subtotal?.formattedAmount;
 
