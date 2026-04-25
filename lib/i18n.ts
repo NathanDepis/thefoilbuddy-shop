@@ -96,6 +96,7 @@ type Dict = {
     seeProducts: string;
     subtotal: string;
     checkout: string;
+    redirecting: string;
     remove: string;
   };
   thanks: {
@@ -264,6 +265,7 @@ const en: Dict = {
     seeProducts: 'Browse products',
     subtotal: 'Subtotal',
     checkout: 'Checkout',
+    redirecting: 'Redirecting to secure checkout…',
     remove: 'Remove',
   },
   thanks: {
@@ -432,6 +434,7 @@ const fr: Dict = {
     seeProducts: 'Voir les produits',
     subtotal: 'Sous-total',
     checkout: 'Commander',
+    redirecting: 'Redirection vers le paiement sécurisé…',
     remove: 'Retirer',
   },
   thanks: {

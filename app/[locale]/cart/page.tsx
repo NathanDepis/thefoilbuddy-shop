@@ -4,6 +4,7 @@ import { getWixClient } from '@/lib/wix-server';
 import { isLocale, t, localeHref, type Locale } from '@/lib/i18n';
 import ShopHeader from '@/components/ShopHeader';
 import Footer from '@/components/Footer';
+import CheckoutForm from '@/components/CheckoutForm';
 import { removeItem, updateQty } from '../shop/actions';
 import { checkout } from './actions';
 
@@ -170,14 +171,11 @@ export default async function CartPage({
               <div className="text-xs text-white/50 mb-5">
                 {d.product.freeShip}
               </div>
-              <form action={checkout.bind(null, locale)}>
-                <button
-                  type="submit"
-                  className="w-full rounded-full bg-[#9ED63A] text-[#0B3C5D] font-bold px-6 py-3.5 hover:shadow-[0_0_24px_rgba(158,214,58,0.4)] hover:scale-[1.01] transition"
-                >
-                  {d.cart.checkout}
-                </button>
-              </form>
+              <CheckoutForm
+                action={checkout.bind(null, locale)}
+                label={d.cart.checkout}
+                redirectingLabel={d.cart.redirecting}
+              />
             </aside>
           </div>
         )}
