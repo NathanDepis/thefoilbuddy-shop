@@ -68,13 +68,14 @@ export default async function ProductPage({
     });
   }
 
-  // Inject custom intro video for the Torx Key + Cutter product.
+  // Inject custom media (video + extra photos) for the Torx Key + Cutter product.
   if (product.slug === 'outil-flottant-coupe-ligne-clé-torx-t45') {
-    galleryImages.unshift({
-      url: '/cutter.mp4',
-      alt: product.name ?? '',
-      type: 'video',
-    });
+    const name = product.name ?? '';
+    galleryImages.unshift(
+      { url: '/cutter.mp4', alt: name, type: 'video' },
+      { url: '/cutter-hand.jpg', alt: name },
+      { url: '/cutter-packaging.jpg', alt: name },
+    );
   }
 
   const options: ProductOption[] = (product.productOptions ?? [])
@@ -106,7 +107,11 @@ export default async function ProductPage({
       }
       if (imgs.length > 0) {
         if (product.slug === 'outil-flottant-coupe-ligne-clé-torx-t45') {
-          imgs.unshift({ url: '/cutter.mp4', alt: value, type: 'video' });
+          imgs.unshift(
+            { url: '/cutter.mp4', alt: value, type: 'video' },
+            { url: '/cutter-hand.jpg', alt: value },
+            { url: '/cutter-packaging.jpg', alt: value },
+          );
         }
         choiceImages[value] = imgs;
       }
