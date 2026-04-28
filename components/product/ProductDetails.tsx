@@ -5,7 +5,7 @@ import ProductGallery from './ProductGallery';
 import ProductBuyBox, { type ProductOption } from './ProductBuyBox';
 import type { Locale } from '@/lib/i18n';
 
-type Media = { url: string; alt?: string };
+type Media = { url: string; alt?: string; type?: 'image' | 'video'; poster?: string };
 
 type Ctx = {
   selected: Record<string, string>;

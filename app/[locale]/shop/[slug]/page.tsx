@@ -45,19 +45,35 @@ export default async function ProductPage({
   const price =
     product.priceData?.formatted?.price ?? product.price?.formatted?.price;
 
-  const galleryImages =
+  type Media = {
+    url: string;
+    alt: string;
+    type?: 'image' | 'video';
+    poster?: string;
+  };
+
+  const galleryImages: Media[] =
     product.media?.items
       ?.map((m) => ({
         url: m.image?.url,
         alt: m.image?.altText ?? product.name ?? '',
       }))
-      .filter((m): m is { url: string; alt: string } => Boolean(m.url)) ?? [];
+      .filter((m): m is Media => Boolean(m.url)) ?? [];
 
   // Fallback to main media if items is empty
   if (galleryImages.length === 0 && product.media?.mainMedia?.image?.url) {
     galleryImages.push({
       url: product.media.mainMedia.image.url,
       alt: product.media.mainMedia.image.altText ?? product.name ?? '',
+    });
+  }
+
+  // Inject custom intro video for the Torx Key + Cutter product.
+  if (product.slug === 'outil-flottant-coupe-ligne-clé-torx-t45') {
+    galleryImages.unshift({
+      url: '/cutter.mp4',
+      alt: product.name ?? '',
+      type: 'video',
     });
   }
 
@@ -72,12 +88,12 @@ export default async function ProductPage({
     .filter((opt) => opt.name && opt.choices.length > 0);
 
   // Build per-choice image sets so picking a color swaps the gallery.
-  const choiceImages: Record<string, { url: string; alt: string }[]> = {};
+  const choiceImages: Record<string, Media[]> = {};
   for (const opt of product.productOptions ?? []) {
     for (const choice of opt.choices ?? []) {
       const value = choice.value;
       if (!value) continue;
-      const imgs: { url: string; alt: string }[] = [];
+      const imgs: Media[] = [];
       for (const item of choice.media?.items ?? []) {
         const url = item.image?.url;
         if (url) imgs.push({ url, alt: item.image?.altText ?? value });
@@ -88,7 +104,12 @@ export default async function ProductPage({
           alt: choice.media.mainMedia.image.altText ?? value,
         });
       }
-      if (imgs.length > 0) choiceImages[value] = imgs;
+      if (imgs.length > 0) {
+        if (product.slug === 'outil-flottant-coupe-ligne-clé-torx-t45') {
+          imgs.unshift({ url: '/cutter.mp4', alt: value, type: 'video' });
+        }
+        choiceImages[value] = imgs;
+      }
     }
   }
 
