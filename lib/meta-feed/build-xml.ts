@@ -231,6 +231,13 @@ function tag(name: string, value: string | undefined): string {
   return `      <${name}>${escapeXml(String(value))}</${name}>\n`;
 }
 
+// Google Shopping taxonomy path. Wingfoil tools fall under boating/water sports
+// hardware. Hardcoded since all 3 SKUs sit in the same category and Wix has no
+// custom field mapping. If the catalog ever diversifies, add per-product
+// overrides via product.collectionIds → category map.
+const GOOGLE_PRODUCT_CATEGORY =
+  'Sporting Goods > Outdoor Recreation > Boating & Water Sports';
+
 function renderItem(it: Item): string {
   const additional = it.additionalImages
     .map((u) => tag('g:additional_image_link', u))
@@ -251,6 +258,8 @@ function renderItem(it: Item): string {
     tag('g:item_group_id', it.itemGroupId) +
     tag('g:color', it.color) +
     tag('g:size', it.size) +
+    tag('g:google_product_category', GOOGLE_PRODUCT_CATEGORY) +
+    tag('g:identifier_exists', 'no') +
     `    </item>\n`
   );
 }

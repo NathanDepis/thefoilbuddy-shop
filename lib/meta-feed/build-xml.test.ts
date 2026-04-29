@@ -70,6 +70,10 @@ describe('buildMetaFeedXml', () => {
       '<g:link>https://thefoilbuddy.com/shop/foil-cover-pro</g:link>',
     );
     expect(xml).toContain('<g:availability>in stock</g:availability>');
+    expect(xml).toContain(
+      '<g:google_product_category>Sporting Goods &gt; Outdoor Recreation &gt; Boating &amp; Water Sports</g:google_product_category>',
+    );
+    expect(xml).toContain('<g:identifier_exists>no</g:identifier_exists>');
     expect(xml).not.toContain('<g:item_group_id>');
     expect(xml).not.toContain('<g:sale_price>');
   });
