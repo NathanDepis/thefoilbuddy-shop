@@ -1,21 +1,16 @@
 /**
  * Server-to-server Wix Stores client used by the Meta product feed.
  *
- * We hit the REST Catalog v3 endpoint directly with an API key (not the
- * OAuth Headless visitor flow used in `lib/wix-server.ts`), because the feed
- * runs unattended and must not be tied to a visitor session.
+ * Uses the Stores Catalog v1 REST endpoint with an account-level API key.
+ * Why v1: TheFoilBuddy's site is on CATALOG_V1 (Wix returns 428 on v3
+ * endpoints with `CATALOG_V1_SITE_CALLING_CATALOG_V3_API`). v1 is the
+ * legacy-but-still-supported catalog model.
  */
 
-const WIX_PRODUCTS_SEARCH_URL =
-  'https://www.wixapis.com/stores/v3/products-search/search';
+const WIX_PRODUCTS_QUERY_URL =
+  'https://www.wixapis.com/stores/v1/products/query';
 
 const PAGE_LIMIT = 100;
-
-export type WixMoney = {
-  amount: string;
-  currency?: string;
-  formattedAmount?: string;
-};
 
 export type WixImage = {
   url?: string;
@@ -29,86 +24,78 @@ export type WixMediaItem = {
 };
 
 export type WixProductMedia = {
-  main?: WixMediaItem;
-  itemsInfo?: { items?: WixMediaItem[] };
+  mainMedia?: WixMediaItem;
+  items?: WixMediaItem[];
+};
+
+export type WixPriceData = {
+  currency?: string;
+  price?: number;
+  discountedPrice?: number;
+  formatted?: { price?: string; discountedPrice?: string };
+};
+
+export type WixStock = {
+  trackInventory?: boolean;
+  inStock?: boolean;
+  inventoryStatus?:
+    | 'IN_STOCK'
+    | 'OUT_OF_STOCK'
+    | 'PARTIALLY_OUT_OF_STOCK'
+    | string;
+  quantity?: number;
 };
 
 export type WixOptionChoice = {
-  name?: string;
-  choiceType?: string;
-  colorCode?: string;
+  value?: string;
+  description?: string;
+  inStock?: boolean;
+  visible?: boolean;
+  media?: WixProductMedia;
 };
 
 export type WixProductOption = {
+  optionType?: string;
   name?: string;
-  optionRenderType?: string;
-  choicesSettings?: { choices?: WixOptionChoice[] };
+  choices?: WixOptionChoice[];
 };
 
-export type WixVariantChoice = {
-  optionChoiceNames?: { optionName?: string; choiceName?: string };
-};
-
-export type WixVariantPrice = {
-  actualPrice?: WixMoney;
-  compareAtPrice?: WixMoney;
-};
-
-export type WixVariantInventory = {
-  inStock?: boolean;
-  preorderEnabled?: boolean;
-  availableForPreorder?: boolean;
+export type WixVariantInner = {
+  priceData?: WixPriceData;
+  sku?: string;
+  visible?: boolean;
+  weight?: number;
 };
 
 export type WixVariant = {
   id?: string;
-  sku?: string;
-  visible?: boolean;
-  price?: WixVariantPrice;
-  choices?: WixVariantChoice[];
-  media?: WixProductMedia;
-  inventoryStatus?: WixVariantInventory;
+  choices?: Record<string, string>;
+  variant?: WixVariantInner;
+  stock?: WixStock;
 };
-
-export type WixInventory = {
-  availabilityStatus?:
-    | 'IN_STOCK'
-    | 'OUT_OF_STOCK'
-    | 'PARTIALLY_OUT_OF_STOCK'
-    | 'UNKNOWN_AVAILABILITY_STATUS';
-  preorderStatus?: string;
-};
-
-export type WixPriceRange = {
-  minValue?: WixMoney;
-  maxValue?: WixMoney;
-};
-
-export type WixBrand = { name?: string };
 
 export type WixProduct = {
   id?: string;
   name?: string;
   slug?: string;
   description?: string;
-  plainDescription?: string;
   visible?: boolean;
-  brand?: WixBrand;
-  currency?: string;
+  productType?: string;
+  manageVariants?: boolean;
+  brand?: string;
+  sku?: string;
+  priceData?: WixPriceData;
+  stock?: WixStock;
   media?: WixProductMedia;
-  options?: WixProductOption[];
-  variantsInfo?: { variants?: WixVariant[] };
-  inventory?: WixInventory;
-  actualPriceRange?: WixPriceRange;
-  compareAtPriceRange?: WixPriceRange;
+  productOptions?: WixProductOption[];
+  variants?: WixVariant[];
+  productPageUrl?: { base?: string; path?: string };
 };
 
-type SearchResponse = {
+type QueryResponse = {
   products?: WixProduct[];
-  pagingMetadata?: {
-    cursors?: { next?: string };
-    hasNext?: boolean;
-  };
+  totalResults?: number;
+  metadata?: { items?: number; offset?: number };
 };
 
 export class WixApiError extends Error {
@@ -122,11 +109,7 @@ export class WixApiError extends Error {
   }
 }
 
-function readEnv(): {
-  apiKey: string;
-  siteId: string;
-  accountId: string;
-} {
+function readEnv(): { apiKey: string; siteId: string; accountId: string } {
   const apiKey = process.env.WIX_API_KEY;
   const siteId = process.env.WIX_SITE_ID;
   const accountId = process.env.WIX_ACCOUNT_ID;
@@ -138,17 +121,9 @@ function readEnv(): {
   return { apiKey, siteId, accountId };
 }
 
-async function fetchPage(cursor?: string): Promise<SearchResponse> {
+async function fetchPage(offset: number): Promise<QueryResponse> {
   const { apiKey, siteId, accountId } = readEnv();
-
-  // Catalog v3 search payload. cursorPaging.cursor is undefined on the first
-  // page; only `limit` is passed. On subsequent pages we send the cursor and
-  // omit `limit` per the v3 spec.
-  const search: Record<string, unknown> = cursor
-    ? { cursorPaging: { cursor } }
-    : { cursorPaging: { limit: PAGE_LIMIT } };
-
-  const res = await fetch(WIX_PRODUCTS_SEARCH_URL, {
+  const res = await fetch(WIX_PRODUCTS_QUERY_URL, {
     method: 'POST',
     headers: {
       Authorization: apiKey,
@@ -156,36 +131,34 @@ async function fetchPage(cursor?: string): Promise<SearchResponse> {
       'wix-account-id': accountId,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ search }),
+    body: JSON.stringify({
+      query: { paging: { limit: PAGE_LIMIT, offset } },
+      includeVariants: true,
+    }),
     cache: 'no-store',
   });
-
   if (!res.ok) {
     const body = await res.text();
     throw new WixApiError(
-      `Wix products-search returned ${res.status}`,
+      `Wix products/query returned ${res.status}`,
       res.status,
       body.slice(0, 500),
     );
   }
-
-  return (await res.json()) as SearchResponse;
+  return (await res.json()) as QueryResponse;
 }
 
 /**
- * Fetch every product from Wix Stores via cursor pagination.
- * Returns only visible products. Stops at 50 pages (5000 products) as a
- * safety guard against infinite pagination loops.
+ * Fetch every visible product from Wix Stores via offset pagination.
+ * Hard cap at 50 pages (5000 products) as a safety guard.
  */
 export async function fetchAllWixProducts(): Promise<WixProduct[]> {
   const all: WixProduct[] = [];
-  let cursor: string | undefined;
   for (let i = 0; i < 50; i++) {
-    const page = await fetchPage(cursor);
-    if (page.products) all.push(...page.products);
-    const next = page.pagingMetadata?.cursors?.next;
-    if (!next || page.pagingMetadata?.hasNext === false) break;
-    cursor = next;
+    const page = await fetchPage(i * PAGE_LIMIT);
+    const items = page.products ?? [];
+    all.push(...items);
+    if (items.length < PAGE_LIMIT) break;
   }
   return all.filter((p) => p.visible !== false);
 }

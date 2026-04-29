@@ -1,6 +1,7 @@
 import type {
   WixImage,
   WixProduct,
+  WixProductMedia,
   WixVariant,
 } from '@/lib/wix/client';
 
@@ -59,10 +60,8 @@ export function formatPrice(amount: string | number, currency: string): string {
 }
 
 /**
- * Wix media URLs come in two shapes:
- *  - already-resolved CDN URLs (https://static.wixstatic.com/media/...)
- *  - internal refs (wix:image://v1/<filename>/<original-name>#originWidth=...)
- * Meta Commerce needs absolute HTTPS URLs.
+ * Wix v1 typically returns absolute https://static.wixstatic.com URLs already.
+ * Keep the wix:image:// fallback in case the schema ever changes.
  */
 export function wixImageUrl(url: string | undefined): string | undefined {
   if (!url) return undefined;
@@ -72,64 +71,49 @@ export function wixImageUrl(url: string | undefined): string | undefined {
   return undefined;
 }
 
-function collectImages(media: WixProduct['media'] | WixVariant['media']): string[] {
+function collectImages(media: WixProductMedia | undefined): string[] {
   const out: string[] = [];
   const push = (img: WixImage | undefined) => {
     const u = wixImageUrl(img?.url);
     if (u && !out.includes(u)) out.push(u);
   };
-  push(media?.main?.image);
-  for (const it of media?.itemsInfo?.items ?? []) push(it.image);
+  push(media?.mainMedia?.image);
+  for (const it of media?.items ?? []) push(it.image);
   return out;
 }
 
 function availability(
   product: WixProduct,
   variant?: WixVariant,
-): 'in stock' | 'out of stock' | 'preorder' {
-  if (variant?.inventoryStatus) {
-    if (variant.inventoryStatus.inStock) return 'in stock';
-    if (variant.inventoryStatus.preorderEnabled) return 'preorder';
-    return 'out of stock';
-  }
-  switch (product.inventory?.availabilityStatus) {
-    case 'IN_STOCK':
-    case 'PARTIALLY_OUT_OF_STOCK':
-      return 'in stock';
-    case 'OUT_OF_STOCK':
-      return 'out of stock';
-    default:
-      return 'in stock';
-  }
-}
-
-function buildVariantTitle(productName: string, variant: WixVariant): string {
-  const opts = (variant.choices ?? [])
-    .map((c) => c.optionChoiceNames?.choiceName)
-    .filter((v): v is string => Boolean(v));
-  if (opts.length === 0) return productName;
-  return `${productName} - ${opts.join(' - ')}`;
+): 'in stock' | 'out of stock' {
+  const stock = variant?.stock ?? product.stock;
+  if (stock?.inStock === false) return 'out of stock';
+  if (stock?.inventoryStatus === 'OUT_OF_STOCK') return 'out of stock';
+  return 'in stock';
 }
 
 function findChoice(
   variant: WixVariant,
-  optionName: string,
+  ...names: string[]
 ): string | undefined {
-  for (const c of variant.choices ?? []) {
-    if (
-      c.optionChoiceNames?.optionName?.toLowerCase() === optionName.toLowerCase()
-    ) {
-      return c.optionChoiceNames?.choiceName;
+  const choices = variant.choices ?? {};
+  for (const name of names) {
+    for (const k of Object.keys(choices)) {
+      if (k.toLowerCase() === name.toLowerCase()) return choices[k];
     }
   }
   return undefined;
 }
 
+function buildVariantTitle(productName: string, variant: WixVariant): string {
+  const opts = Object.values(variant.choices ?? {}).filter(Boolean);
+  if (opts.length === 0) return productName;
+  return `${productName} - ${opts.join(' - ')}`;
+}
+
 function variantQueryString(variant: WixVariant): string {
   const parts: string[] = [];
-  for (const c of variant.choices ?? []) {
-    const k = c.optionChoiceNames?.optionName;
-    const v = c.optionChoiceNames?.choiceName;
+  for (const [k, v] of Object.entries(variant.choices ?? {})) {
     if (k && v) parts.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
   }
   return parts.join('&');
@@ -142,15 +126,34 @@ type Item = {
   link: string;
   imageLink?: string;
   additionalImages: string[];
-  availability: 'in stock' | 'out of stock' | 'preorder';
+  availability: 'in stock' | 'out of stock';
   price?: string;
   salePrice?: string;
   brand: string;
   itemGroupId?: string;
   color?: string;
   size?: string;
-  sku?: string;
 };
+
+function priceTuple(
+  price: number | undefined,
+  discounted: number | undefined,
+  currency: string,
+): { price?: string; salePrice?: string } {
+  if (price === undefined) return {};
+  // Google Shopping convention: g:price = list price, g:sale_price = current
+  // discounted price (only when actually discounted).
+  if (discounted !== undefined && discounted < price) {
+    return {
+      price: formatPrice(price, currency),
+      salePrice: formatPrice(discounted, currency),
+    };
+  }
+  // No discount: emit g:price as the discountedPrice (= current selling price
+  // in Wix when no promo) and skip g:sale_price.
+  const current = discounted ?? price;
+  return { price: formatPrice(current, currency) };
+}
 
 export function mapVariantsToItems(
   product: WixProduct,
@@ -161,85 +164,50 @@ export function mapVariantsToItems(
   const name = (product.name ?? '').replace(/\s+/g, ' ').trim();
   const baseLink = `${siteUrl.replace(/\/$/, '')}/shop/${encodeURIComponent(slug)}`;
   const description = truncate(stripHtml(product.description ?? ''), DESCRIPTION_MAX);
-  const brand = product.brand?.name?.trim() || DEFAULT_BRAND;
-  const currency =
-    product.currency ||
-    product.actualPriceRange?.minValue?.currency ||
-    'EUR';
+  const brand = product.brand?.trim() || DEFAULT_BRAND;
+  const currency = product.priceData?.currency || 'EUR';
   const productImages = collectImages(product.media);
 
-  const variants = product.variantsInfo?.variants ?? [];
-  const hasRealVariants =
-    variants.length > 1 ||
-    (variants.length === 1 && (variants[0].choices ?? []).length > 0);
+  const variants = product.variants ?? [];
+  // Real variants only exist when manageVariants=true. When false, Wix returns
+  // a single dummy variant with id=00000000-... and choices={} that we ignore
+  // in favor of product-level fields.
+  const realVariants = product.manageVariants
+    ? variants.filter((v) => v.choices && Object.keys(v.choices).length > 0)
+    : [];
 
-  if (!hasRealVariants) {
-    const v = variants[0];
-    const actualAmount =
-      v?.price?.actualPrice?.amount ??
-      product.actualPriceRange?.minValue?.amount;
-    const compareAmount =
-      v?.price?.compareAtPrice?.amount ??
-      product.compareAtPriceRange?.minValue?.amount;
-    const price = actualAmount ? formatPrice(actualAmount, currency) : undefined;
-    const compare = compareAmount
-      ? formatPrice(compareAmount, currency)
-      : undefined;
-    // Google Shopping convention: list price goes in g:price, discounted price
-    // in g:sale_price. Wix exposes the discounted as `actualPrice` and the
-    // list as `compareAtPrice`, so we swap when a compare-at exists and is
-    // strictly higher.
-    let finalPrice = price;
-    let finalSale: string | undefined;
-    if (
-      compare &&
-      compareAmount &&
-      actualAmount &&
-      parseFloat(compareAmount) > parseFloat(actualAmount)
-    ) {
-      finalPrice = compare;
-      finalSale = price;
-    }
+  if (realVariants.length === 0) {
+    const { price, salePrice } = priceTuple(
+      product.priceData?.price,
+      product.priceData?.discountedPrice,
+      currency,
+    );
     return [
       {
-        id: v?.sku || productId,
+        id: product.sku || productId,
         title: truncate(name, TITLE_MAX),
         description,
         link: baseLink,
         imageLink: productImages[0],
         additionalImages: productImages.slice(1, 1 + ADDITIONAL_IMAGE_MAX),
-        availability: availability(product, v),
-        price: finalPrice,
-        salePrice: finalSale,
+        availability: availability(product),
+        price,
+        salePrice,
         brand,
-        itemGroupId: undefined,
-        sku: v?.sku,
       },
     ];
   }
 
-  return variants.map<Item>((v) => {
-    const variantImages = collectImages(v.media);
+  return realVariants.map<Item>((v) => {
+    const variantImages = collectImages(v.variant ? undefined : undefined);
     const images = variantImages.length > 0 ? variantImages : productImages;
     const qs = variantQueryString(v);
-    const actualAmount = v.price?.actualPrice?.amount;
-    const compareAmount = v.price?.compareAtPrice?.amount;
-    const price = actualAmount ? formatPrice(actualAmount, currency) : undefined;
-    const compare = compareAmount
-      ? formatPrice(compareAmount, currency)
-      : undefined;
-    let finalPrice = price;
-    let finalSale: string | undefined;
-    if (
-      compare &&
-      compareAmount &&
-      actualAmount &&
-      parseFloat(compareAmount) > parseFloat(actualAmount)
-    ) {
-      finalPrice = compare;
-      finalSale = price;
-    }
-    const id = v.sku || `${productId}_${v.id ?? ''}`;
+    const { price, salePrice } = priceTuple(
+      v.variant?.priceData?.price ?? product.priceData?.price,
+      v.variant?.priceData?.discountedPrice ?? product.priceData?.discountedPrice,
+      currency,
+    );
+    const id = v.variant?.sku || `${productId}_${v.id ?? ''}`;
     return {
       id,
       title: truncate(buildVariantTitle(name, v), TITLE_MAX),
@@ -248,13 +216,12 @@ export function mapVariantsToItems(
       imageLink: images[0],
       additionalImages: images.slice(1, 1 + ADDITIONAL_IMAGE_MAX),
       availability: availability(product, v),
-      price: finalPrice,
-      salePrice: finalSale,
+      price,
+      salePrice,
       brand,
       itemGroupId: productId,
-      color: findChoice(v, 'Color') ?? findChoice(v, 'Couleur'),
-      size: findChoice(v, 'Size') ?? findChoice(v, 'Taille'),
-      sku: v.sku,
+      color: findChoice(v, 'Color', 'Couleur'),
+      size: findChoice(v, 'Size', 'Taille'),
     };
   });
 }

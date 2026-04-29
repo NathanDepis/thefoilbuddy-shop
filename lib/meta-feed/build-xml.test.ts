@@ -45,7 +45,7 @@ describe('wixImageUrl', () => {
 });
 
 describe('buildMetaFeedXml', () => {
-  it('emits a single <item> for a product with no variants', () => {
+  it('emits a single <item> for a product without managed variants', () => {
     const products: WixProduct[] = [
       {
         id: 'p1',
@@ -53,10 +53,12 @@ describe('buildMetaFeedXml', () => {
         slug: 'foil-cover-pro',
         description: '<p>Great cover.</p>',
         visible: true,
-        currency: 'EUR',
-        media: { main: { image: { url: 'https://static.wixstatic.com/media/p1-main.jpg' } } },
-        actualPriceRange: { minValue: { amount: '199', currency: 'EUR' } },
-        inventory: { availabilityStatus: 'IN_STOCK' },
+        manageVariants: false,
+        priceData: { price: 199, discountedPrice: 199, currency: 'EUR' },
+        stock: { inStock: true, inventoryStatus: 'IN_STOCK' },
+        media: {
+          mainMedia: { image: { url: 'https://static.wixstatic.com/media/p1-main.jpg' } },
+        },
       },
     ];
     const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
@@ -69,9 +71,34 @@ describe('buildMetaFeedXml', () => {
     );
     expect(xml).toContain('<g:availability>in stock</g:availability>');
     expect(xml).not.toContain('<g:item_group_id>');
+    expect(xml).not.toContain('<g:sale_price>');
   });
 
-  it('emits one <item> per variant with a shared item_group_id', () => {
+  it('does not split when productOptions exist but manageVariants=false', () => {
+    // Real-world TheFoilBuddy shape: Color/Size options for display only.
+    const products: WixProduct[] = [
+      {
+        id: 'p-tfb',
+        name: 'Foil Buddy',
+        slug: 'foil-buddy',
+        description: '',
+        visible: true,
+        manageVariants: false,
+        priceData: { price: 39.95, discountedPrice: 39.95, currency: 'EUR' },
+        stock: { inStock: true },
+        productOptions: [
+          { name: 'Color', choices: [{ value: 'Red' }, { value: 'Yellow' }] },
+        ],
+        variants: [
+          { id: '00000000-0000-0000-0000-000000000000', choices: {}, variant: { sku: '' } },
+        ],
+      },
+    ];
+    const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
+    expect(countItems(xml)).toBe(1);
+  });
+
+  it('emits one <item> per real variant with shared item_group_id', () => {
     const products: WixProduct[] = [
       {
         id: 'p2',
@@ -79,46 +106,38 @@ describe('buildMetaFeedXml', () => {
         slug: 'cover',
         description: '',
         visible: true,
-        currency: 'EUR',
-        actualPriceRange: { minValue: { amount: '99', currency: 'EUR' } },
-        inventory: { availabilityStatus: 'IN_STOCK' },
-        variantsInfo: {
-          variants: [
-            {
-              id: 'v-black-m',
+        manageVariants: true,
+        priceData: { price: 99, discountedPrice: 99, currency: 'EUR' },
+        stock: { inStock: true },
+        variants: [
+          {
+            id: 'v-black-m',
+            choices: { Color: 'Black', Size: 'M' },
+            variant: {
               sku: 'COV-BL-M',
-              price: { actualPrice: { amount: '99', currency: 'EUR' } },
-              choices: [
-                { optionChoiceNames: { optionName: 'Color', choiceName: 'Black' } },
-                { optionChoiceNames: { optionName: 'Size', choiceName: 'M' } },
-              ],
-              inventoryStatus: { inStock: true },
+              priceData: { price: 99, discountedPrice: 99, currency: 'EUR' },
             },
-            {
-              id: 'v-red-l',
+            stock: { inStock: true },
+          },
+          {
+            id: 'v-red-l',
+            choices: { Color: 'Red', Size: 'L' },
+            variant: {
               sku: 'COV-RD-L',
-              price: { actualPrice: { amount: '99', currency: 'EUR' } },
-              choices: [
-                { optionChoiceNames: { optionName: 'Color', choiceName: 'Red' } },
-                { optionChoiceNames: { optionName: 'Size', choiceName: 'L' } },
-              ],
-              inventoryStatus: { inStock: true },
+              priceData: { price: 99, discountedPrice: 99, currency: 'EUR' },
             },
-          ],
-        },
+            stock: { inStock: true },
+          },
+        ],
       },
     ];
     const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
     expect(countItems(xml)).toBe(2);
-    const groupIds = extract(xml, 'g:item_group_id');
-    expect(groupIds).toEqual(['p2', 'p2']);
-    const ids = extract(xml, 'g:id');
-    expect(ids).toEqual(['COV-BL-M', 'COV-RD-L']);
-    const titles = extract(xml, 'g:title');
-    expect(titles).toEqual(['Cover - Black - M', 'Cover - Red - L']);
+    expect(extract(xml, 'g:item_group_id')).toEqual(['p2', 'p2']);
+    expect(extract(xml, 'g:id')).toEqual(['COV-BL-M', 'COV-RD-L']);
+    expect(extract(xml, 'g:title')).toEqual(['Cover - Black - M', 'Cover - Red - L']);
     expect(xml).toContain('<g:color>Black</g:color>');
     expect(xml).toContain('<g:size>L</g:size>');
-    // Variant link includes the variant query string (& escaped per XML rules).
     expect(xml).toContain('?Color=Black&amp;Size=M');
   });
 
@@ -130,9 +149,9 @@ describe('buildMetaFeedXml', () => {
         slug: 'tom-jerry',
         description: 'A & B',
         visible: true,
-        currency: 'EUR',
-        actualPriceRange: { minValue: { amount: '10', currency: 'EUR' } },
-        inventory: { availabilityStatus: 'IN_STOCK' },
+        manageVariants: false,
+        priceData: { price: 10, discountedPrice: 10, currency: 'EUR' },
+        stock: { inStock: true },
       },
     ];
     const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
@@ -149,16 +168,16 @@ describe('buildMetaFeedXml', () => {
         slug: 'sold-out',
         description: '',
         visible: true,
-        currency: 'EUR',
-        actualPriceRange: { minValue: { amount: '49', currency: 'EUR' } },
-        inventory: { availabilityStatus: 'OUT_OF_STOCK' },
+        manageVariants: false,
+        priceData: { price: 49, discountedPrice: 49, currency: 'EUR' },
+        stock: { inStock: false, inventoryStatus: 'OUT_OF_STOCK' },
       },
     ];
     const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
     expect(xml).toContain('<g:availability>out of stock</g:availability>');
   });
 
-  it('uses compareAtPrice as g:price and actualPrice as g:sale_price when discounted', () => {
+  it('uses list price as g:price and discounted as g:sale_price', () => {
     const products: WixProduct[] = [
       {
         id: 'p5',
@@ -166,10 +185,9 @@ describe('buildMetaFeedXml', () => {
         slug: 'on-sale',
         description: '',
         visible: true,
-        currency: 'EUR',
-        actualPriceRange: { minValue: { amount: '149', currency: 'EUR' } },
-        compareAtPriceRange: { minValue: { amount: '199', currency: 'EUR' } },
-        inventory: { availabilityStatus: 'IN_STOCK' },
+        manageVariants: false,
+        priceData: { price: 199, discountedPrice: 149, currency: 'EUR' },
+        stock: { inStock: true },
       },
     ];
     const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
