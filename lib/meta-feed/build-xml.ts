@@ -119,6 +119,13 @@ function variantQueryString(variant: WixVariant): string {
   return parts.join('&');
 }
 
+// Default quantity exposed to Meta Shops when Wix doesn't track inventory.
+// Meta requires quantity >= 1 to make the item buyable in Shops; without it
+// the item is imported to the catalog but hidden from the storefront
+// (error: "Missing quantity"). Wix sites with trackInventory=false don't
+// expose a real number, so we surface a generous fixed value.
+const DEFAULT_IN_STOCK_QUANTITY = 100;
+
 type Item = {
   id: string;
   title: string;
@@ -127,6 +134,7 @@ type Item = {
   imageLink?: string;
   additionalImages: string[];
   availability: 'in stock' | 'out of stock';
+  quantity: number;
   price?: string;
   salePrice?: string;
   brand: string;
@@ -134,6 +142,19 @@ type Item = {
   color?: string;
   size?: string;
 };
+
+function resolveQuantity(
+  product: WixProduct,
+  variant?: WixVariant,
+  isInStock?: boolean,
+): number {
+  if (!isInStock) return 0;
+  const stock = variant?.stock ?? product.stock;
+  if (stock?.trackInventory && typeof stock.quantity === 'number') {
+    return Math.max(0, stock.quantity);
+  }
+  return DEFAULT_IN_STOCK_QUANTITY;
+}
 
 function priceTuple(
   price: number | undefined,
@@ -182,6 +203,7 @@ export function mapVariantsToItems(
       product.priceData?.discountedPrice,
       currency,
     );
+    const avail = availability(product);
     return [
       {
         id: product.sku || productId,
@@ -190,7 +212,8 @@ export function mapVariantsToItems(
         link: baseLink,
         imageLink: productImages[0],
         additionalImages: productImages.slice(1, 1 + ADDITIONAL_IMAGE_MAX),
-        availability: availability(product),
+        availability: avail,
+        quantity: resolveQuantity(product, undefined, avail === 'in stock'),
         price,
         salePrice,
         brand,
@@ -208,6 +231,7 @@ export function mapVariantsToItems(
       currency,
     );
     const id = v.variant?.sku || `${productId}_${v.id ?? ''}`;
+    const avail = availability(product, v);
     return {
       id,
       title: truncate(buildVariantTitle(name, v), TITLE_MAX),
@@ -215,7 +239,8 @@ export function mapVariantsToItems(
       link: qs ? `${baseLink}?${qs}` : baseLink,
       imageLink: images[0],
       additionalImages: images.slice(1, 1 + ADDITIONAL_IMAGE_MAX),
-      availability: availability(product, v),
+      availability: avail,
+      quantity: resolveQuantity(product, v, avail === 'in stock'),
       price,
       salePrice,
       brand,
@@ -251,6 +276,7 @@ function renderItem(it: Item): string {
     tag('g:image_link', it.imageLink) +
     additional +
     tag('g:availability', it.availability) +
+    tag('g:quantity_to_sell_on_facebook', String(it.quantity)) +
     tag('g:price', it.price) +
     tag('g:sale_price', it.salePrice) +
     tag('g:condition', 'new') +

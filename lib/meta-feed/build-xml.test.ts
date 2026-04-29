@@ -71,6 +71,9 @@ describe('buildMetaFeedXml', () => {
     );
     expect(xml).toContain('<g:availability>in stock</g:availability>');
     expect(xml).toContain(
+      '<g:quantity_to_sell_on_facebook>100</g:quantity_to_sell_on_facebook>',
+    );
+    expect(xml).toContain(
       '<g:google_product_category>Sporting Goods &gt; Outdoor Recreation &gt; Boating &amp; Water Sports</g:google_product_category>',
     );
     expect(xml).toContain('<g:identifier_exists>no</g:identifier_exists>');
@@ -179,6 +182,9 @@ describe('buildMetaFeedXml', () => {
     ];
     const xml = buildMetaFeedXml(products, { siteUrl: SITE_URL });
     expect(xml).toContain('<g:availability>out of stock</g:availability>');
+    expect(xml).toContain(
+      '<g:quantity_to_sell_on_facebook>0</g:quantity_to_sell_on_facebook>',
+    );
   });
 
   it('uses list price as g:price and discounted as g:sale_price', () => {
