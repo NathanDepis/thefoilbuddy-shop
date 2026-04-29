@@ -224,6 +224,51 @@ export default async function ProductPage({
           );
         })()}
 
+        {product.slug === 'outil-flottant-coupe-ligne-clé-torx-t45' && (() => {
+          const copy =
+            locale === 'fr'
+              ? {
+                  kicker: "Pourquoi je l'ai conçu",
+                  quote:
+                    "Depuis que je me suis pris dans un filet de pêcheur, un jour où j'ai vraiment eu peur, j'ai toujours cet outil flottant sur moi. Je peux ajuster l'emplacement de mon mât ou resserrer mon aile avant si besoin, et dans l'urgence je peux couper les lignes d'un filet de pêche.",
+                  role: 'Rider & fondateur — Bayonne',
+                }
+              : {
+                  kicker: 'Why I designed it',
+                  quote:
+                    "Ever since I got caught in a fisherman's net — a day I genuinely feared for myself — I always carry this floating tool with me. I can adjust the position of my mast or tighten my front wing if needed, and in an emergency I can cut through the lines of a fishing net.",
+                  role: 'Rider & founder — Bayonne',
+                };
+          return (
+            <section className="mb-16 max-w-4xl">
+              <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02] backdrop-blur p-6 sm:p-8">
+                <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start">
+                  <img
+                    src="/founder.jpg"
+                    alt="Nathan DEPIS"
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover flex-shrink-0 border border-white/10"
+                  />
+                  <div className="flex-1">
+                    <div className="text-xs uppercase tracking-widest text-[#4DB8C7] mb-3">
+                      {copy.kicker}
+                    </div>
+                    <blockquote className="text-white/85 leading-relaxed text-base sm:text-lg italic relative">
+                      <span className="absolute -left-2 -top-2 text-4xl text-[#4DB8C7]/30 leading-none select-none" aria-hidden>
+                        &ldquo;
+                      </span>
+                      {copy.quote}
+                    </blockquote>
+                    <div className="mt-5">
+                      <div className="font-semibold text-white">Nathan DEPIS</div>
+                      <div className="text-sm text-white/60">{copy.role}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
+
         <VideoTestimonials locale={locale} />
 
         <Footer locale={locale} />
