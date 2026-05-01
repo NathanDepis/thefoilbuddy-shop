@@ -238,31 +238,37 @@ export default async function Landing({ locale }: { locale: Locale }) {
             {d.community.title}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Tile 1 — Workshop video (2 cols) */}
-            <div className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-[#0B3C5D] via-[#091E2C] to-[#041320] backdrop-blur min-h-[320px]">
-              <video
-                className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                src="/workshop.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-hidden
-              />
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background:
-                    'linear-gradient(180deg, rgba(9,30,44,0.15) 0%, rgba(9,30,44,0.4) 60%, rgba(9,30,44,0.95) 100%)',
-                }}
-              />
-              <div className="relative h-full flex flex-col justify-between p-6 sm:p-8 min-h-[320px]">
-                <div className="inline-flex self-start items-center gap-1.5 rounded-full bg-[#9ED63A]/15 border border-[#9ED63A]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#9ED63A] font-semibold backdrop-blur">
+            {/* Tile 1 — Workshop video + maker photo (2 cols) */}
+            <div className="md:col-span-2 relative rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-[#0B3C5D] via-[#091E2C] to-[#041320] backdrop-blur flex flex-col">
+              <div className="relative grid grid-cols-2 min-h-[220px] sm:min-h-[260px]">
+                <div className="relative overflow-hidden bg-black">
+                  <video
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    src="/workshop.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden
+                  />
+                </div>
+                <div className="relative overflow-hidden">
+                  <Image
+                    src="/marto.jpg"
+                    alt="Florian Thomar"
+                    width={800}
+                    height={800}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#9ED63A]/15 border border-[#9ED63A]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#9ED63A] font-semibold backdrop-blur z-10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#9ED63A] animate-pulse" />
                   {d.community.workshopTag}
                 </div>
-                <p className="text-white text-lg font-medium max-w-md">
+              </div>
+              <div className="relative p-6 sm:p-8">
+                <p className="text-white text-base sm:text-lg font-medium leading-relaxed">
                   {d.community.workshopCaption}
                 </p>
               </div>
@@ -304,6 +310,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                 </svg>
               </span>
             </a>
+
           </div>
         </section>
 

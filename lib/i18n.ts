@@ -165,7 +165,8 @@ const en: Dict = {
     },
     community: {
       title: 'Made in Bayonne, shared with the community',
-      workshopCaption: 'Prototyping tools, one layer at a time.',
+      workshopCaption:
+        'Every tool is 3D-printed and assembled by Florian Thomar in Bayonne, seasoned machinist and co-inventor of the FoilBuddy.',
       workshopTag: 'Workshop',
       igHandle: '@thefoilbuddy',
       igCta: 'Follow on Instagram',
@@ -334,7 +335,8 @@ const fr: Dict = {
     },
     community: {
       title: 'Conçu à Bayonne, partagé avec la communauté',
-      workshopCaption: 'Prototypage des outils, couche par couche.',
+      workshopCaption:
+        'Tous les tools sont imprimés et montés par Florian Thomar à Bayonne, usineur chevronné et co-inventeur du FoilBuddy.',
       workshopTag: 'Atelier',
       igHandle: '@thefoilbuddy',
       igCta: 'Suivre sur Instagram',
