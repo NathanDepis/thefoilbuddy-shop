@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getWixClient } from '@/lib/wix-server';
 import { isLocale, t, localeHref, translateProductName, isNewProduct } from '@/lib/i18n';
+import { getReviewStats } from '@/lib/reviews';
 import ShopHeader from '@/components/ShopHeader';
 import Hero from '@/components/Hero';
 import FeaturesGrid from '@/components/FeaturesGrid';
@@ -81,6 +82,41 @@ export default async function ShopPage({
                       <h3 className="text-lg font-semibold text-white group-hover:text-[#4DB8C7] transition">
                         {translateProductName(locale, p.slug, p.name) ?? p.name}
                       </h3>
+                      {(() => {
+                        const stats = getReviewStats(p.slug);
+                        if (stats.count === 0) return null;
+                        const label =
+                          locale === 'fr'
+                            ? `${stats.count} avis`
+                            : `${stats.count} reviews`;
+                        return (
+                          <div className="inline-flex items-center gap-1.5 mt-1.5 text-xs text-white/70">
+                            <span className="inline-flex items-center gap-0.5 text-[#FFC937]">
+                              {[0, 1, 2, 3, 4].map((i) => {
+                                const filled = i < Math.round(stats.average);
+                                return (
+                                  <svg
+                                    key={i}
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill={filled ? 'currentColor' : 'none'}
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    aria-hidden
+                                  >
+                                    <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                  </svg>
+                                );
+                              })}
+                            </span>
+                            <span className="font-semibold text-white">
+                              {stats.average.toFixed(1)}
+                            </span>
+                            <span className="text-white/50">({label})</span>
+                          </div>
+                        );
+                      })()}
                       <p className="text-2xl font-bold text-white/95 mt-2">
                         {p.priceData?.formatted?.price ?? p.price?.formatted?.price}
                       </p>

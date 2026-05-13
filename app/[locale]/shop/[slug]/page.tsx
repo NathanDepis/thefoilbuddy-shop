@@ -5,6 +5,8 @@ import { isLocale, t, localeHref, translateProductName, translateProductDescript
 import ShopHeader from '@/components/ShopHeader';
 import Footer from '@/components/Footer';
 import VideoTestimonials from '@/components/VideoTestimonials';
+import ProductReviews from '@/components/product/ProductReviews';
+import { getReviewStats } from '@/lib/reviews';
 import { type ProductOption } from '@/components/product/ProductBuyBox';
 import {
   VariantProvider,
@@ -148,6 +150,44 @@ export default async function ProductPage({
             <h1 className="text-3xl sm:text-4xl font-bold leading-tight">
               {displayName}
             </h1>
+            {(() => {
+              const stats = getReviewStats(product.slug);
+              if (stats.count === 0) return null;
+              const label =
+                locale === 'fr'
+                  ? `${stats.count} avis`
+                  : `${stats.count} reviews`;
+              return (
+                <a
+                  href="#reviews"
+                  className="inline-flex items-center gap-2 mt-2 text-sm text-white/70 hover:text-white transition"
+                >
+                  <span className="inline-flex items-center gap-0.5 text-[#FFC937]">
+                    {[0, 1, 2, 3, 4].map((i) => {
+                      const filled = i < Math.round(stats.average);
+                      return (
+                        <svg
+                          key={i}
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill={filled ? 'currentColor' : 'none'}
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          aria-hidden
+                        >
+                          <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                      );
+                    })}
+                  </span>
+                  <span className="font-semibold text-white">
+                    {stats.average.toFixed(1)}
+                  </span>
+                  <span className="text-white/50">({label})</span>
+                </a>
+              );
+            })()}
             <div className="flex items-center gap-3 mt-3 mb-6">
               <p className="text-3xl font-bold text-[#4DB8C7]">{price}</p>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#9ED63A]/15 text-[#9ED63A] text-xs font-semibold px-2.5 py-1 border border-[#9ED63A]/30">
@@ -268,6 +308,8 @@ export default async function ProductPage({
             </section>
           );
         })()}
+
+        {product.slug && <ProductReviews slug={product.slug} locale={locale} />}
 
         <VideoTestimonials locale={locale} />
 
