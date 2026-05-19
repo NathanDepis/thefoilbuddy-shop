@@ -63,10 +63,10 @@ export function ReviewForm({
   const displayed = hover || rating;
 
   return (
-    <form onSubmit={handleSubmit} className="mt-10 space-y-6">
+    <form onSubmit={handleSubmit} className="mt-10 rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-6 sm:p-8 space-y-6">
       <div>
         <label className="block text-sm font-medium text-white/80">{strings.ratingLabel}</label>
-        <div className="mt-2 flex gap-1" role="radiogroup" aria-label={strings.ratingLabel}>
+        <div className="mt-3 flex gap-1.5" role="radiogroup" aria-label={strings.ratingLabel}>
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
@@ -83,7 +83,7 @@ export function ReviewForm({
             </button>
           ))}
         </div>
-        <p className="mt-1 text-xs text-white/50">{strings.ratingHelp}</p>
+        <p className="mt-2 text-xs text-white/50">{strings.ratingHelp}</p>
       </div>
 
       <div>
@@ -95,7 +95,7 @@ export function ReviewForm({
           onChange={(e) => setTitle(e.target.value)}
           placeholder={strings.titlePlaceholder}
           maxLength={80}
-          className="mt-2 block w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="mt-2 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-[#4DB8C7]/60 focus:outline-none focus:ring-1 focus:ring-[#4DB8C7]/30 transition"
         />
       </div>
 
@@ -108,7 +108,7 @@ export function ReviewForm({
           placeholder={strings.bodyPlaceholder}
           maxLength={2000}
           rows={5}
-          className="mt-2 block w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="mt-2 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-[#4DB8C7]/60 focus:outline-none focus:ring-1 focus:ring-[#4DB8C7]/30 transition"
         />
         <p className="mt-1 text-xs text-white/50">{strings.bodyHelp}</p>
       </div>
@@ -122,7 +122,7 @@ export function ReviewForm({
           onChange={(e) => setLocation(e.target.value)}
           placeholder={strings.locationPlaceholder}
           maxLength={60}
-          className="mt-2 block w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-white/40 focus:outline-none"
+          className="mt-2 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-[#4DB8C7]/60 focus:outline-none focus:ring-1 focus:ring-[#4DB8C7]/30 transition"
         />
       </div>
 
@@ -131,7 +131,7 @@ export function ReviewForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-full bg-white px-6 py-4 text-sm font-semibold text-black transition disabled:opacity-50"
+        className="w-full rounded-full bg-[#9ED63A] px-6 py-4 text-sm font-bold text-[#0B3C5D] transition hover:bg-[#b1e054] disabled:opacity-50 disabled:hover:bg-[#9ED63A] shadow-[0_0_24px_rgba(158,214,58,0.25)]"
       >
         {pending ? strings.submitting : strings.submit}
       </button>
