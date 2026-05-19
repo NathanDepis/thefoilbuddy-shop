@@ -41,6 +41,7 @@ export function ReviewForm({
       setError(strings.errorRating);
       return;
     }
+    const validRating = rating as 1 | 2 | 3 | 4 | 5;
     startTransition(async () => {
       const result = await submitReview({
         locale,
@@ -49,7 +50,7 @@ export function ReviewForm({
         productSlug,
         productName,
         firstName: defaultName,
-        rating,
+        rating: validRating,
         title: title.trim() || undefined,
         body: body.trim() || undefined,
         location: location.trim() || undefined,
