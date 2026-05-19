@@ -50,7 +50,6 @@ export default async function ReviewPage({
           productSlug={payload.productSlug}
           productName={payload.productName}
           defaultName={payload.firstName}
-          strings={strings}
         />
       </div>
     </main>

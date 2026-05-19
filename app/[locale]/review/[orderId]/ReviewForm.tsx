@@ -6,8 +6,6 @@ import type { Locale } from '@/lib/i18n';
 import { REVIEW_STRINGS } from '@/lib/review-i18n';
 import { submitReview } from './actions';
 
-type Strings = typeof REVIEW_STRINGS['fr'];
-
 export function ReviewForm({
   locale,
   orderId,
@@ -15,7 +13,6 @@ export function ReviewForm({
   productSlug,
   productName,
   defaultName,
-  strings,
 }: {
   locale: Locale;
   orderId: string;
@@ -23,8 +20,8 @@ export function ReviewForm({
   productSlug: string;
   productName: string;
   defaultName: string;
-  strings: Strings;
 }) {
+  const strings = REVIEW_STRINGS[locale];
   const router = useRouter();
   const [rating, setRating] = useState<0 | 1 | 2 | 3 | 4 | 5>(0);
   const [hover, setHover] = useState<0 | 1 | 2 | 3 | 4 | 5>(0);
