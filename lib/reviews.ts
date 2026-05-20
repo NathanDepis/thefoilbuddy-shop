@@ -27,7 +27,7 @@ export type Review = {
 };
 
 export const REVIEWS: Record<string, Review[]> = {
-  // ===== Foil Buddy — T30/T45 (jaune-orange) — 3 avis =====
+  // ===== Foil Buddy — T30/T45 (jaune-orange) =====
   'tool-titanium-torx-t30-t45-yellow-orange': [
     {
       id: 'r1',
@@ -57,9 +57,96 @@ export const REVIEWS: Record<string, Review[]> = {
       verified: true,
       body: 'Nice floating tool, I love it.',
     },
+    {
+      id: 'r4',
+      name: 'Nicolas',
+      location: 'Brest',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Efficace',
+      body: 'Pas cher pour du titane, petit et très pratique',
+    },
+    {
+      id: 'r5',
+      name: 'Elisa',
+      location: 'La Rochelle',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Super qualité',
+      body: 'J\'ai acheté un accessoire pour planche à voile pour l\'offrir à mon père et il ne jure que par ça, sur l\'eau c\'est le top pour réparer. De plus le service client a été super réactif après un petit problème d\'adresse donc merci beaucoup !',
+    },
+    {
+      id: 'r6',
+      name: 'Patrick',
+      rating: 3,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Adapté pour changer la position du mat et du stab',
+      body: 'Très bien le Titane, solide et ne rouille pas. Par contre, il est difficile d\'appliquer un couple suffisant sur les M8 qui tiennent le fuselage. Cela doit couter cher, mais j\'aimerai bien une clef du style de celle de Duotone en Titane.',
+    },
+    {
+      id: 'r7',
+      name: 'Gilles',
+      location: 'Île-de-France',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Je ne sors jamais sans',
+      body: 'Ça me permet de régler différentes position de mon mat en fonction des conditions.',
+    },
+    {
+      id: 'r8',
+      name: 'Pierre',
+      location: 'Saint-Nazaire',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Usefull',
+      body: 'Top tool light and compact.',
+    },
+    {
+      id: 'r9',
+      name: 'Jean-Marie',
+      location: 'Sablé-sur-Sarthe',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      body: '',
+    },
+    {
+      id: 'r10',
+      name: 'Stéphane',
+      location: 'Plomodiern',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Bien pratique pour régler son foil',
+      body: 'En cas de changement de foil, de stab, etc. Permet un réglage en nav sans revenir au bord.',
+    },
+    {
+      id: 'r11',
+      name: 'Thomas',
+      location: 'Saint-Jean-de-Luz',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      body: '',
+    },
+    {
+      id: 'r12',
+      name: 'Michel',
+      location: 'Lyon',
+      rating: 5,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Très pratique sur l\'eau',
+      body: 'Vraiment très pratique, ça ne rouille pas, on peut l\'avoir toujours sur soi, pour pouvoir resserrer une vis ou changer un réglage, sans avoir à retourner à la voiture.',
+    },
   ],
 
-  // ===== Foil Buddy — T30/T40 Standard (vert-rouge) — 4 avis =====
+  // ===== Foil Buddy — T30/T40 Standard (vert-rouge) =====
   'tool-titanium-torx-t30-t45-green-red': [
     {
       id: 'r1',
@@ -99,9 +186,19 @@ export const REVIEWS: Record<string, Review[]> = {
       verified: true,
       body: 'Merci pour ce petit outil bien pratique !',
     },
+    {
+      id: 'r5',
+      name: 'Frédéric',
+      location: 'La Rochelle',
+      rating: 3,
+      date: '2026-05-20',
+      verified: true,
+      title: 'Très pratique pour serrer les vis qui se desserrent en navigation',
+      body: 'Mais ne peut desserrer certaines vis car bras de levier un peu court, donc on peut pas toujours changer le réglage du pied de mat.',
+    },
   ],
 
-  // ===== Coupe-ligne + Clé Torx flottante — 2 avis =====
+  // ===== Coupe-ligne + Clé Torx flottante =====
   'outil-flottant-coupe-ligne-clé-torx-t45': [
     {
       id: 'r1',

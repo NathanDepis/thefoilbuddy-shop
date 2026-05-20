@@ -155,9 +155,11 @@ export default function ProductReviews({ slug, locale }: Props) {
                 </span>
               )}
             </div>
-            <p className="text-white/80 leading-relaxed text-[15px]">
-              {r.body}
-            </p>
+            {r.body && (
+              <p className="text-white/80 leading-relaxed text-[15px]">
+                {r.body}
+              </p>
+            )}
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/55">
               <span className="font-medium text-white/80">{r.name}</span>
               {r.location && <span>· {r.location}</span>}
