@@ -172,6 +172,15 @@ export const REVIEWS: Record<string, Review[]> = {
       verified: true,
       body: 'Hyper utile pour resserrer le foil sur l\'eau.',
     },
+    {
+      id: 'r16',
+      name: 'Pascal',
+      location: 'Lansargues',
+      rating: 5,
+      date: '2026-05-23',
+      verified: true,
+      body: 'Super outil, je le prends à l\'eau à chaque sortie, très pratique pour régler le mât sans avoir à revenir au bord. Aucune trace de rouille ou d\'usure après plusieurs mois d\'utilisation. Ça a déjà dépanné des copains sur l\'eau 😉 Je recommande.',
+    },
   ],
 
   // ===== Foil Buddy — T30/T40 Standard (vert-rouge) =====
