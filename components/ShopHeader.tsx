@@ -28,8 +28,8 @@ export default async function ShopHeader({ locale }: { locale: Locale }) {
     <header className="sticky top-0 z-40 -mx-4 sm:-mx-8 mb-10 border-b border-white/10 bg-[#091E2C]/80 backdrop-blur-md">
       <div className="bg-[#9ED63A] text-[#091E2C] text-xs sm:text-sm font-semibold text-center py-1.5 px-4">
         {locale === 'fr'
-          ? "Notre équipe est en congés cette semaine — les commandes expédient avec un léger délai."
-          : 'Our team is on a short break this week — orders will ship with a slight delay.'}
+          ? "Notre équipe est en congés — les commandes partent à partir du 13 août."
+          : 'Our team is on a break — orders will ship starting August 13th.'}
       </div>
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4 px-4 sm:px-8 py-4">
         <div className="flex items-center gap-3 sm:gap-6 min-w-0 flex-shrink">
