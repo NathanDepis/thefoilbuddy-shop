@@ -86,6 +86,7 @@ type Dict = {
     size: string;
     quantity: string;
     shipping: { title: string; body: string };
+    titanWarning: string;
     freeShip: string;
     stock: string;
     features: string;
@@ -256,6 +257,7 @@ const en: Dict = {
       title: 'Shipping & returns',
       body: 'Free shipping in France. Delivery within 3–5 business days. 14-day return policy.',
     },
+    titanWarning: '⚠️ Note: this tool is not suitable for the new F-One foils with Titan 2 connection, as they require a tightening torque higher than what this tool can provide.',
     freeShip: 'Free shipping in France',
     stock: 'In stock — ships in 48h',
     features: 'Key features',
@@ -426,6 +428,7 @@ const fr: Dict = {
       title: 'Livraison & retours',
       body: 'Livraison gratuite en France. Expédition sous 3–5 jours ouvrés. Retours sous 14 jours.',
     },
+    titanWarning: '⚠️ Attention : cet outil ne convient pas aux nouveaux foils F-One avec connexion Titan 2, qui nécessitent un couple de serrage supérieur à ce que l\'outil peut fournir.',
     freeShip: 'Livraison gratuite en France',
     stock: 'En stock — expédié sous 48h',
     features: 'Caractéristiques',
