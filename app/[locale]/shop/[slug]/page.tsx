@@ -224,14 +224,11 @@ export default async function ProductPage({
               }}
             />
 
-            {(product.slug === 'tool-titanium-torx-t30-t45-yellow-orange' ||
-              product.slug === 'tool-titanium-torx-t30-t45-green-red') && (
-              <div className="mt-8 rounded-2xl border border-amber-400/30 bg-amber-400/10 backdrop-blur p-5">
-                <p className="text-sm text-amber-200 leading-relaxed">
-                  {d.product.titanWarning}
-                </p>
-              </div>
-            )}
+            <div className="mt-8 rounded-2xl border border-amber-400/30 bg-amber-400/10 backdrop-blur p-5">
+              <p className="text-sm text-amber-200 leading-relaxed">
+                {d.product.titanWarning}
+              </p>
+            </div>
 
             <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5">
               <div className="flex items-start gap-3">
