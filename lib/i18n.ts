@@ -519,7 +519,7 @@ const PRODUCT_DESCRIPTION_OVERRIDES: Record<Locale, Record<string, string>> = {
       '<p>&nbsp;</p>' +
       '<p>GUIDE DE COMPATIBILITÉ</p>' +
       '<p>&nbsp;</p>' +
-      '<p>T30 / T40&nbsp;&nbsp; F-One, Armstrong, Sabfoil, Takuma, etc.<br>T30 / T45&nbsp;&nbsp; Duotone, AFS, Sroka, Indiana.</p>',
+      '<p>T30 / T40&nbsp;&nbsp; F-One, Armstrong, Sabfoil, Takuma, AFS, etc.<br>T30 / T45&nbsp;&nbsp; Duotone, Sroka, Indiana.</p>',
     'tool-titanium-torx-t30-t45-green-red':
       '<p>Le seul outil qu\'il te faut sur l\'eau.</p>' +
       '<p>Arrête de perdre du temps et tes outils. Le Foil Buddy est l\'accessoire 2-en-1 ultime, pensé pour des ajustements rapides sans quitter le spot.</p>' +
@@ -532,7 +532,7 @@ const PRODUCT_DESCRIPTION_OVERRIDES: Record<Locale, Record<string, string>> = {
       '<p>&nbsp;</p>' +
       '<p>GUIDE DE COMPATIBILITÉ</p>' +
       '<p>&nbsp;</p>' +
-      '<p>T30 / T40&nbsp;&nbsp; F-One, Armstrong, Sabfoil, Takuma, etc.<br>T30 / T45&nbsp;&nbsp; Duotone, AFS, Sroka, Indiana.</p>',
+      '<p>T30 / T40&nbsp;&nbsp; F-One, Armstrong, Sabfoil, Takuma, AFS, etc.<br>T30 / T45&nbsp;&nbsp; Duotone, Sroka, Indiana.</p>',
     'outil-flottant-coupe-ligne-clé-torx-t45':
       '<p>TheFoilBuddy – Clé Torx Flottante + Coupe-ligne</p>' +
       '<p>Un seul outil. Tout ce qu\'il te faut.</p>' +
