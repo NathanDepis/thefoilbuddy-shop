@@ -16,10 +16,10 @@ export type CommunityStats = {
   reports: number | null;
 };
 
-async function fetchCount(table: string): Promise<number | null> {
+async function fetchCount(table: string, filter = ''): Promise<number | null> {
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/${table}?select=id&limit=1`,
+      `${SUPABASE_URL}/rest/v1/${table}?select=id&limit=1${filter}`,
       {
         headers: {
           apikey: SUPABASE_ANON_KEY,
@@ -44,7 +44,7 @@ async function fetchCount(table: string): Promise<number | null> {
 
 export async function getCommunityStats(): Promise<CommunityStats> {
   const [spots, reports] = await Promise.all([
-    fetchCount('spots'),
+    fetchCount('spots', '&is_verified=eq.true'),
     fetchCount('live_reports'),
   ]);
   return { spots, reports };

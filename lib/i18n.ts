@@ -20,6 +20,8 @@ type Dict = {
       tagline: string;
       features: string[];
       cta: string;
+      more: string;
+      shots: string[];
       statsTitle: string;
       statsSpotsLabel: string;
       leaderboardLabel: string;
@@ -129,14 +131,18 @@ const en: Dict = {
       kicker: 'The App',
       title: 'TheFoilBuddy App',
       tagline:
-        'Find the best spots, live weather, real-time rider reports and a community that rides where you ride.',
+        'Spots, conditions, session tracking and a community that rides where you ride. Free on iPhone.',
       features: [
-        'Interactive spot map worldwide',
-        'Live wind, waves, tide & temperature',
-        'Real-time session reports from riders on the water',
-        'Strava & Polar sync (Garmin soon) — automatic speed leaderboards per spot',
+        'Spot map with live wind, swell and tide',
+        'Session tracking and analysis by discipline: pump/dockstart, wing, surf foil, downwind',
+        'Apple Watch: record without your phone',
+        'Share video of your session, track and stats included',
+        'Challenge your friends on your spot + weekly leaderboards',
+        'AI debrief after every session',
       ],
-      cta: 'Open the App',
+      cta: 'Open in browser',
+      more: 'Learn more',
+      shots: ['Spot map', 'Session analysis', 'Share video'],
       statsTitle: 'Live on the app',
       statsSpotsLabel: 'spots mapped',
       leaderboardLabel: 'Top speed — Saint-Jean-de-Luz',
@@ -300,14 +306,18 @@ const fr: Dict = {
       kicker: 'L\'App',
       title: 'L\'App TheFoilBuddy',
       tagline:
-        'Les meilleurs spots, la météo live, les rapports des riders en temps réel et une communauté qui ride où tu rides.',
+        'Spots, conditions, tracking de session et une communauté qui ride où tu rides. Gratuite sur iPhone.',
       features: [
-        'Carte interactive des spots dans le monde',
-        'Vent, vagues, marée et température en direct',
-        'Rapports de session en temps réel depuis l\'eau',
-        'Sync Strava & Polar (Garmin bientôt) — classement vitesse automatique par spot',
+        'Carte des spots avec vent, houle et marée en direct',
+        'Tracking et analyse de session par sport : pump/dockstart, wing, surf foil, downwind',
+        'Apple Watch : enregistre sans ton téléphone',
+        'Vidéo de partage de ta session, tracé et stats inclus',
+        'Défie tes potes sur ton spot + classements de la semaine',
+        'Débrief de chaque session par l\'IA',
       ],
-      cta: 'Ouvrir l\'App',
+      cta: 'Ouvrir dans le navigateur',
+      more: 'En savoir plus',
+      shots: ['Carte des spots', 'Analyse de session', 'Vidéo de partage'],
       statsTitle: 'En direct sur l\'app',
       statsSpotsLabel: 'spots référencés',
       leaderboardLabel: 'Top speed — Saint-Jean-de-Luz',

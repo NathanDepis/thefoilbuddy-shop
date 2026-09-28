@@ -100,13 +100,8 @@ export default async function Landing({ locale }: { locale: Locale }) {
 
           <div className="grid md:grid-cols-2 gap-6">
             {/* --- APP CARD --- */}
-            <a
-              href={APP_URL}
-              target="_blank"
-              rel="noopener"
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur hover:border-[#4DB8C7]/50 hover:bg-white/[0.07] transition-all duration-300"
-            >
-              {/* Visual: real app screenshots composited for "see it in action" */}
+            <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur hover:border-[#4DB8C7]/50 hover:bg-white/[0.07] transition-all duration-300">
+              {/* Visual: three phone mockups with real, recent app screens */}
               <div className="relative aspect-square sm:aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#0E4C63] via-[#0B3C5D] to-[#052232] flex items-center justify-center">
                 <div
                   className="absolute inset-0 opacity-30 pointer-events-none"
@@ -115,55 +110,37 @@ export default async function Landing({ locale }: { locale: Locale }) {
                       'radial-gradient(circle at 25% 25%, rgba(77,184,199,0.55) 0%, transparent 55%), radial-gradient(circle at 85% 75%, rgba(158,214,58,0.2) 0%, transparent 60%)',
                   }}
                 />
-
-                {/* Weather screenshot — back-left, tilted left, hidden on tiny screens */}
-                <div className="absolute left-[4%] top-[22%] w-[50%] max-w-[250px] rounded-xl overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.65)] ring-1 ring-white/10 transform -rotate-[8deg] hidden sm:block opacity-85">
-                  <Image
-                    src="/app-weather.jpg"
-                    alt="Weather forecast in-app"
-                    width={560}
-                    height={244}
-                    className="w-full h-auto block"
-                  />
-                </div>
-
-                {/* Share conditions screenshot — back-right, tilted right, hidden on tiny screens */}
-                <div className="absolute right-[6%] top-[10%] w-[32%] max-w-[130px] rounded-2xl overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.65)] ring-1 ring-white/10 transform rotate-[9deg] hidden sm:block opacity-90">
-                  <Image
-                    src="/app-share.jpg"
-                    alt="Share conditions card"
-                    width={360}
-                    height={640}
-                    className="w-full h-auto block"
-                  />
-                </div>
-
-                {/* Session/Strava share — front layer, largest, centered */}
-                <div className="relative w-[42%] max-w-[165px] sm:w-[38%] sm:max-w-[170px] rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.75)] ring-1 ring-white/20 transform rotate-[-2deg] sm:rotate-[2deg] translate-y-[6%]">
-                  <Image
-                    src="/app-session.jpg"
-                    alt="Session share card with GPS trace"
-                    width={400}
-                    height={712}
-                    className="w-full h-auto block"
-                  />
+                {[
+                  { src: '/app-shots/01-carte.jpg', alt: d.app.shots[0], cls: 'left-[7%] top-[20%] w-[27%] -rotate-[7deg] opacity-90' },
+                  { src: '/app-shots/05-partage.jpg', alt: d.app.shots[2], cls: 'right-[7%] top-[20%] w-[27%] rotate-[7deg] opacity-90' },
+                ].map((p) => (
+                  <div key={p.src} className={`absolute ${p.cls} rounded-[1.1rem] sm:rounded-[1.4rem] bg-[#05131c] p-[3px] sm:p-1 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.7)] ring-1 ring-white/15`}>
+                    <div className="aspect-[720/1463] overflow-hidden rounded-[0.9rem] sm:rounded-[1.1rem]">
+                      <Image src={p.src} alt={p.alt} width={360} height={732} className="w-full h-full object-cover object-top" />
+                    </div>
+                  </div>
+                ))}
+                <div className="relative z-[1] w-[33%] translate-y-[4%] rounded-[1.3rem] sm:rounded-[1.7rem] bg-[#05131c] p-1 sm:p-1.5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/25">
+                  <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-[30%] h-1 sm:h-1.5 rounded-full bg-black/70 z-[2]" />
+                  <div className="aspect-[720/1463] overflow-hidden rounded-[1.05rem] sm:rounded-[1.35rem]">
+                    <Image src="/app-shots/04-session.jpg" alt={d.app.shots[1]} width={360} height={732} className="w-full h-full object-cover object-top" />
+                  </div>
                 </div>
 
                 <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#4DB8C7]/15 border border-[#4DB8C7]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#4DB8C7] font-semibold backdrop-blur z-10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#4DB8C7] animate-pulse" />
                   {d.app.kicker}
                 </div>
-                {/* Live spot count overlay — keeps Supabase real data visible */}
-                <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 border border-white/15 px-3 py-1.5 text-[11px] text-white backdrop-blur-md z-10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#9ED63A] animate-pulse" />
-                  <span className="font-semibold text-[#4DB8C7]">{fmt(stats.spots, '—')}</span>
-                  <span className="text-white/60">{d.app.statsSpotsLabel}</span>
-                </div>
+                {stats.spots !== null && (
+                  <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 border border-white/15 px-3 py-1.5 text-[11px] text-white backdrop-blur-md z-10">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#9ED63A] animate-pulse" />
+                    <span className="font-semibold text-[#4DB8C7]">{fmt(stats.spots, '—')}</span>
+                    <span className="text-white/60">{d.app.statsSpotsLabel}</span>
+                  </div>
+                )}
               </div>
               <div className="p-6 sm:p-8 flex flex-col flex-1">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-3 group-hover:text-[#4DB8C7] transition">
-                  {d.app.title}
-                </h2>
+                <h2 className="text-2xl sm:text-3xl font-bold mb-3">{d.app.title}</h2>
                 <p className="text-white/70 leading-relaxed mb-5">{d.app.tagline}</p>
                 <ul className="space-y-2.5 mb-6">
                   {d.app.features.map((f) => (
@@ -175,14 +152,27 @@ export default async function Landing({ locale }: { locale: Locale }) {
                     </li>
                   ))}
                 </ul>
-                <span className="mt-auto inline-flex items-center justify-center gap-2 rounded-full border border-[#4DB8C7]/50 bg-[#4DB8C7]/10 text-[#4DB8C7] font-semibold px-6 py-3 group-hover:bg-[#4DB8C7]/20 transition">
-                  {d.app.cta}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M7 17L17 7M9 7h8v8" />
-                  </svg>
-                </span>
+                <div className="mt-auto space-y-4">
+                  <StoreBadges locale={locale} size="sm" />
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+                    <a
+                      href={APP_URL}
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-[#4DB8C7]/50 bg-[#4DB8C7]/10 text-[#4DB8C7] font-semibold px-5 py-2.5 text-sm hover:bg-[#4DB8C7]/20 transition"
+                    >
+                      {d.app.cta}
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M7 17L17 7M9 7h8v8" />
+                      </svg>
+                    </a>
+                    <Link href={localeHref(locale, '/app')} className="text-sm text-white/70 underline underline-offset-4 hover:text-white">
+                      {d.app.more}
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </a>
+            </div>
 
             {/* --- SHOP CARD --- */}
             <Link
