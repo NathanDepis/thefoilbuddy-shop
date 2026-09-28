@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { NOINDEX } from '@/lib/seo';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { isLocale, type Locale } from '@/lib/i18n';
@@ -8,6 +10,8 @@ import Footer from '@/components/Footer';
 import { ReviewForm } from './ReviewForm';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = { robots: NOINDEX };
 
 export default async function ReviewPage({
   params,

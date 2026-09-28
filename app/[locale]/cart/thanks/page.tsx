@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { NOINDEX } from '@/lib/seo';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isLocale, t, localeHref } from '@/lib/i18n';
@@ -5,6 +7,8 @@ import ShopHeader from '@/components/ShopHeader';
 import Footer from '@/components/Footer';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = { robots: NOINDEX };
 
 export default async function ThanksPage({
   params,

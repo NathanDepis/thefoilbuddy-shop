@@ -1,3 +1,6 @@
+import type { Metadata } from 'next';
+import { localeAlternates, NOINDEX } from '@/lib/seo';
+import { isLocale as _isLocale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getWixClient } from '@/lib/wix-server';
@@ -15,6 +18,12 @@ import {
 } from '@/components/product/ProductDetails';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { locale, slug } = await params;
+  if (!_isLocale(locale)) return {};
+  return { alternates: localeAlternates(locale, `/shop/${slug}`) };
+}
 
 export default async function ProductPage({
   params,

@@ -4,8 +4,6 @@ import { getWixClient } from '@/lib/wix-server';
 import { t, localeHref, type Locale } from '@/lib/i18n';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const APP_URL = 'https://app.thefoilbuddy.com';
-
 async function getCartCount(locale: Locale): Promise<number> {
   try {
     const { client, hasTokens } = await getWixClient(locale);
@@ -52,17 +50,12 @@ export default async function ShopHeader({ locale }: { locale: Locale }) {
             >
               {d.nav.shop}
             </Link>
-            <a
-              href={APP_URL}
-              target="_blank"
-              rel="noopener"
-              className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm text-white/75 hover:text-white hover:bg-white/5 transition"
+            <Link
+              href={localeHref(locale, '/app')}
+              className="rounded-full px-3 py-1.5 text-sm text-white/75 hover:text-white hover:bg-white/5 transition"
             >
               {d.nav.app}
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden className="opacity-60">
-                <path d="M7 17L17 7M9 7h8v8" />
-              </svg>
-            </a>
+            </Link>
           </nav>
         </div>
 

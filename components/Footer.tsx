@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { t, localeHref, type Locale } from '@/lib/i18n';
 import { COMPANY } from '@/lib/legal';
+import { appPageT } from '@/lib/app-page-i18n';
+import StoreBadges from './StoreBadges';
 
 export default function Footer({ locale }: { locale: Locale }) {
   const d = t(locale).footer;
@@ -17,6 +19,13 @@ export default function Footer({ locale }: { locale: Locale }) {
     <footer className="mt-20 pt-10 pb-8 border-t border-white/10 text-center">
       <div className="text-white font-semibold mb-1">The Foil Buddy</div>
       <p className="text-sm text-white/60 mb-6">{d.tagline}</p>
+
+      <div className="mb-8">
+        <Link href={localeHref(locale, '/app')} className="inline-block text-xs uppercase tracking-widest text-white/50 hover:text-white mb-3">
+          {appPageT(locale).footerTitle}
+        </Link>
+        <StoreBadges locale={locale} align="center" size="sm" />
+      </div>
 
       <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/70 mb-6">
         {links.map((l) => (

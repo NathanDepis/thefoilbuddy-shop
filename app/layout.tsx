@@ -22,10 +22,7 @@ export const metadata: Metadata = {
   title: { default: TITLE, template: "%s | The Foil Buddy" },
   description: DESCRIPTION,
   metadataBase: new URL(SITE_URL),
-  alternates: {
-    canonical: "/",
-    languages: { fr: "/fr", en: "/en" },
-  },
+  itunes: { appId: "6811917143" },
   openGraph: {
     type: "website",
     siteName: "The Foil Buddy",

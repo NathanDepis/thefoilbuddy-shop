@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { NOINDEX } from '@/lib/seo';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getWixClient } from '@/lib/wix-server';
@@ -32,6 +34,8 @@ function wixImageUrl(raw: string | undefined): string | undefined {
   if (!match) return undefined;
   return `https://static.wixstatic.com/media/${match[1]}`;
 }
+
+export const metadata: Metadata = { robots: NOINDEX };
 
 export default async function CartPage({
   params,

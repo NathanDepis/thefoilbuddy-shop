@@ -1,3 +1,6 @@
+import type { Metadata } from 'next';
+import { localeAlternates, NOINDEX } from '@/lib/seo';
+import { isLocale as _isLocale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getWixClient } from '@/lib/wix-server';
@@ -11,6 +14,12 @@ import VideoTestimonials from '@/components/VideoTestimonials';
 import Footer from '@/components/Footer';
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  if (!_isLocale(locale)) return {};
+  return { alternates: localeAlternates(locale, '/shop') };
+}
 
 export default async function ShopPage({
   params,

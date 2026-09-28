@@ -5,6 +5,10 @@ import { getCommunityStats } from '@/lib/stats';
 import ShopHeader from './ShopHeader';
 import Footer from './Footer';
 import GrainOverlay from './GrainOverlay';
+import StoreBadges from './StoreBadges';
+import AppJsonLd from './AppJsonLd';
+import { appPageT } from '@/lib/app-page-i18n';
+import { SITE_URL } from '@/lib/seo';
 
 const APP_URL = 'https://app.thefoilbuddy.com';
 const INSTAGRAM_URL = 'https://www.instagram.com/thefoilbuddy/';
@@ -17,6 +21,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
 
   return (
     <main className="relative min-h-screen bg-[#091E2C] text-white">
+      <AppJsonLd description={appPageT(locale).metaDescription} url={`${SITE_URL}/${locale}/app`} inLanguage={locale} />
       <GrainOverlay />
       <div className="relative z-[2] max-w-6xl mx-auto px-4 sm:px-8">
         <ShopHeader locale={locale} />
@@ -52,6 +57,9 @@ export default async function Landing({ locale }: { locale: Locale }) {
             <p className="text-lg sm:text-xl text-white/75 leading-relaxed">
               {d.subtitle}
             </p>
+            <div className="mt-8">
+              <StoreBadges locale={locale} />
+            </div>
           </div>
         </section>
 
