@@ -1,0 +1,19 @@
+# TheFoilBuddy
+
+> TheFoilBuddy (Foil Buddy, FoilBuddy, The Foil Buddy) : application gratuite des riders
+> de foil (wingfoil, kitefoil, pumpfoil, surf foil, downwind) et boutique d'outils techniques
+> pour le foil (clés Torx, visserie, entretien).
+
+## Application
+
+- Plus de 250 spots avec vent, houle, marées ; suivi GPS des sessions ; détection des sauts ;
+  Apple Watch et Wear OS ; import et montage vidéo GoPro avec la vitesse ; coach IA (ChatGPT,
+  Claude, Gemini) ; communauté par spot et alertes vent.
+- [App Store](https://apps.apple.com/app/id6811917143)
+- [Google Play](https://play.google.com/store/apps/details?id=com.thefoilbuddy.app)
+- [Application web](https://app.thefoilbuddy.com/)
+- [Présentation de l'app](https://www.thefoilbuddy.com/app)
+
+## Boutique
+
+- [Boutique d'outils foil](https://www.thefoilbuddy.com)
