@@ -263,6 +263,22 @@ function tag(name: string, value: string | undefined): string {
 const GOOGLE_PRODUCT_CATEGORY =
   'Sporting Goods > Outdoor Recreation > Boating & Water Sports';
 
+// Ports facturés (barème Wix Stores), repris pour Google Merchant (11/10/2026).
+const SHIPPING: [string, string][] = [
+  ['FR', '0.35 EUR'],
+  ...['DE','NL','BE','ES','IT','AT','DK','PT','LU','SE','FI','PL','CZ','SK','SI','HR','HU','RO','BG','GR','EE','LV','LT','MT','CY'].map(
+    (c) => [c, '4.95 EUR'] as [string, string],
+  ),
+  ['IE', '14.90 EUR'],
+  ['GB', '7.13 EUR'],
+  ...['CH','US','AU','NZ','CA','IL','NO'].map((c) => [c, '9.90 EUR'] as [string, string]),
+];
+
+const SHIPPING_XML = SHIPPING.map(
+  ([c, price]) =>
+    `      <g:shipping><g:country>${c}</g:country><g:service>Standard</g:service><g:price>${price}</g:price></g:shipping>\n`,
+).join('');
+
 function renderItem(it: Item): string {
   const additional = it.additionalImages
     .map((u) => tag('g:additional_image_link', u))
@@ -286,6 +302,7 @@ function renderItem(it: Item): string {
     tag('g:size', it.size) +
     tag('g:google_product_category', GOOGLE_PRODUCT_CATEGORY) +
     tag('g:identifier_exists', 'no') +
+    SHIPPING_XML +
     `    </item>\n`
   );
 }
