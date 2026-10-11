@@ -263,15 +263,15 @@ function tag(name: string, value: string | undefined): string {
 const GOOGLE_PRODUCT_CATEGORY =
   'Sporting Goods > Outdoor Recreation > Boating & Water Sports';
 
-// Ports facturés (barème Wix Stores), repris pour Google Merchant (11/10/2026).
+// Ports facturés = options de livraison Wix Stores (relevées le 11/10/2026).
+// Europe et reste du monde : offerts dès 75 € (non repris ici, prix unitaire < 75 €).
+const EU = ['ES','IT','DE','PT','HR','IE','GR','NL','AT','SI','PL','BE','DK','NO','SE','HU','RO','BG','FI'];
+const WORLD = ['AU','JP','MX','BR','AE','ID','TH','PE','MA','NZ','SG','CA','IL','ZA','AR','KR','SA','CR','MC','CH','GB','VN'];
 const SHIPPING: [string, string][] = [
-  ['FR', '0.35 EUR'],
-  ...['DE','NL','BE','ES','IT','AT','DK','PT','LU','SE','FI','PL','CZ','SK','SI','HR','HU','RO','BG','GR','EE','LV','LT','MT','CY'].map(
-    (c) => [c, '4.95 EUR'] as [string, string],
-  ),
-  ['IE', '14.90 EUR'],
-  ['GB', '7.13 EUR'],
-  ...['CH','US','AU','NZ','CA','IL','NO'].map((c) => [c, '9.90 EUR'] as [string, string]),
+  ['FR', '0.00 EUR'],
+  ...EU.map((c) => [c, '4.95 EUR'] as [string, string]),
+  ['US', '29.90 EUR'],
+  ...WORLD.map((c) => [c, '9.90 EUR'] as [string, string]),
 ];
 
 const SHIPPING_XML = SHIPPING.map(
