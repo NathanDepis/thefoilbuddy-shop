@@ -111,8 +111,8 @@ export default async function Landing({ locale }: { locale: Locale }) {
                   }}
                 />
                 {[
-                  { src: '/app-shots/01-carte.jpg', alt: d.app.shots[0], cls: 'left-[7%] top-[20%] w-[27%] -rotate-[7deg] opacity-90' },
-                  { src: '/app-shots/05-partage.jpg', alt: d.app.shots[2], cls: 'right-[7%] top-[20%] w-[27%] rotate-[7deg] opacity-90' },
+                  { src: `/app-shots/v2-stats-${locale === 'fr' ? 'fr' : 'en'}.jpg`, alt: d.app.shots[0], cls: 'left-[7%] top-[20%] w-[27%] -rotate-[7deg] opacity-90' },
+                  { src: `/app-shots/v2-live-${locale === 'fr' ? 'fr' : 'en'}.jpg`, alt: d.app.shots[2], cls: 'right-[7%] top-[20%] w-[27%] rotate-[7deg] opacity-90' },
                 ].map((p) => (
                   <div key={p.src} className={`absolute ${p.cls} rounded-[1.1rem] sm:rounded-[1.4rem] bg-[#05131c] p-[3px] sm:p-1 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.7)] ring-1 ring-white/15`}>
                     <div className="aspect-[720/1463] overflow-hidden rounded-[0.9rem] sm:rounded-[1.1rem]">
@@ -123,7 +123,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                 <div className="relative z-[1] w-[33%] translate-y-[4%] rounded-[1.3rem] sm:rounded-[1.7rem] bg-[#05131c] p-1 sm:p-1.5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/25">
                   <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-[30%] h-1 sm:h-1.5 rounded-full bg-black/70 z-[2]" />
                   <div className="aspect-[720/1463] overflow-hidden rounded-[1.05rem] sm:rounded-[1.35rem]">
-                    <Image src="/app-shots/04-session.jpg" alt={d.app.shots[1]} width={360} height={732} className="w-full h-full object-cover object-top" />
+                    <Image src={`/app-shots/v2-deb-${locale === 'fr' ? 'fr' : 'en'}.jpg`} alt={d.app.shots[1]} width={360} height={732} className="w-full h-full object-cover object-top" />
                   </div>
                 </div>
 
