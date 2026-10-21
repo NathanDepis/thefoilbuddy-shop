@@ -133,7 +133,7 @@ const en: Dict = {
       tagline:
         'Your AI coach debriefs every session and tells you what to work on next time. Free on iPhone and Android.',
       features: [
-        'AI debrief of every session: pro coach or roast mode',
+        'AI debrief of every session: a real coach in your pocket',
         'Your whole session in numbers: take-offs, waves, top speed, flight time',
         'Your speed synced on your GoPro video, ready to share',
         'Wingfoil, surf foil, pumpfoil, downwind, parawing — phone or watch',
@@ -141,7 +141,7 @@ const en: Dict = {
       ],
       cta: 'Open in browser',
       more: 'Learn more',
-      shots: ['Session in numbers', 'AI session debrief', 'Speed synced on video'],
+      shots: ['Spot forecast', 'AI session debrief', 'Speed synced on video'],
       statsTitle: 'Live on the app',
       statsSpotsLabel: 'spots mapped',
       leaderboardLabel: 'Top speed — Saint-Jean-de-Luz',
@@ -307,7 +307,7 @@ const fr: Dict = {
       tagline:
         'Ton coach IA débriefe chaque session et te dit quoi travailler la prochaine fois. Gratuite sur iPhone et Android.',
       features: [
-        'Débrief IA de chaque session : coach pro ou mode qui te chambre',
+        'Débrief IA de chaque session : un vrai coach dans ta poche',
         'Toute ta session en chiffres : take-offs, vagues, vitesse max, temps de vol',
         'Ta vitesse calée sur ta vidéo GoPro, prête à partager',
         'Wingfoil, surf foil, pumpfoil, downwind, parawing — au téléphone ou à la montre',
@@ -315,7 +315,7 @@ const fr: Dict = {
       ],
       cta: 'Ouvrir dans le navigateur',
       more: 'En savoir plus',
-      shots: ['Session en chiffres', 'Débrief IA de la session', 'Vitesse calée sur la vidéo'],
+      shots: ['Météo du spot', 'Débrief IA de la session', 'Vitesse calée sur la vidéo'],
       statsTitle: 'En direct sur l\'app',
       statsSpotsLabel: 'spots référencés',
       leaderboardLabel: 'Top speed — Saint-Jean-de-Luz',

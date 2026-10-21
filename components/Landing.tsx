@@ -111,7 +111,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                   }}
                 />
                 {[
-                  { src: `/app-shots/v2-stats-${locale === 'fr' ? 'fr' : 'en'}.jpg`, alt: d.app.shots[0], cls: 'left-[7%] top-[20%] w-[27%] -rotate-[7deg] opacity-90' },
+                  { src: `/app-shots/v2-spot-${locale === 'fr' ? 'fr' : 'en'}.jpg`, alt: d.app.shots[0], cls: 'left-[7%] top-[20%] w-[27%] -rotate-[7deg] opacity-90' },
                   { src: `/app-shots/v2-live-${locale === 'fr' ? 'fr' : 'en'}.jpg`, alt: d.app.shots[2], cls: 'right-[7%] top-[20%] w-[27%] rotate-[7deg] opacity-90' },
                 ].map((p) => (
                   <div key={p.src} className={`absolute ${p.cls} rounded-[1.1rem] sm:rounded-[1.4rem] bg-[#05131c] p-[3px] sm:p-1 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.7)] ring-1 ring-white/15`}>
