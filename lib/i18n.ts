@@ -131,12 +131,12 @@ const en: Dict = {
       kicker: 'The App',
       title: 'TheFoilBuddy App',
       tagline:
-        'Your AI coach debriefs every session and tells you what to work on next time. Free on iPhone and Android.',
+        'Your AI coach debriefs every session and tells you what to work on next time. Free on iPhone, Android and Garmin watches.',
       features: [
         'AI debrief of every session: a real coach in your pocket',
         'Your whole session in numbers: take-offs, waves, top speed, flight time',
         'Your speed synced on your GoPro video, ready to share',
-        'Wingfoil, surf foil, pumpfoil, downwind, parawing — phone or watch',
+        'Wingfoil, surf foil, pumpfoil, downwind, parawing — on your phone, Apple Watch, Wear OS and now Garmin',
         'Spot map with live wind, swell and tide',
       ],
       cta: 'Open in browser',
@@ -305,12 +305,12 @@ const fr: Dict = {
       kicker: 'L\'App',
       title: 'L\'App TheFoilBuddy',
       tagline:
-        'Ton coach IA débriefe chaque session et te dit quoi travailler la prochaine fois. Gratuite sur iPhone et Android.',
+        'Ton coach IA débriefe chaque session et te dit quoi travailler la prochaine fois. Gratuite sur iPhone, Android et montres Garmin.',
       features: [
         'Débrief IA de chaque session : un vrai coach dans ta poche',
         'Toute ta session en chiffres : take-offs, vagues, vitesse max, temps de vol',
         'Ta vitesse calée sur ta vidéo GoPro, prête à partager',
-        'Wingfoil, surf foil, pumpfoil, downwind, parawing — au téléphone ou à la montre',
+        'Wingfoil, surf foil, pumpfoil, downwind, parawing — au téléphone, sur Apple Watch, Wear OS et maintenant Garmin',
         'Carte des spots avec vent, houle et marée en direct',
       ],
       cta: 'Ouvrir dans le navigateur',

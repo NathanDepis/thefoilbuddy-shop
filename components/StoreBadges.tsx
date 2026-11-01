@@ -1,4 +1,4 @@
-import { APP_STORE_URL, PLAY_STORE_URL, PLAY_STORE_LIVE } from '@/lib/app-store';
+import { APP_STORE_URL, GARMIN_STORE_URL, PLAY_STORE_URL, PLAY_STORE_LIVE } from '@/lib/app-store';
 import type { Locale } from '@/lib/i18n';
 
 /** Official App Store + Google Play badges. Play shown as "coming soon" while in closed test. */
@@ -50,6 +50,16 @@ export default function StoreBadges({
           </span>
         );
       })()}
+      <a
+        href={GARMIN_STORE_URL}
+        target="_blank"
+        rel="noopener"
+        aria-label={locale === 'fr' ? 'Disponible sur Garmin Connect IQ' : 'Get it on Garmin Connect IQ'}
+        className={`inline-flex ${h} flex-col justify-center rounded-lg border border-white/40 bg-black px-3 leading-tight text-white transition hover:opacity-90`}
+      >
+        <span className="text-[10px]">{locale === 'fr' ? 'Disponible sur' : 'Get it on'}</span>
+        <span className="text-sm font-semibold">Garmin Connect IQ</span>
+      </a>
     </div>
   );
 }
