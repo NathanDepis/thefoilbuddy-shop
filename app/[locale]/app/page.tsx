@@ -96,14 +96,17 @@ export default async function AppPage({ params }: { params: Promise<{ locale: st
         <section className="mb-20">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8">{d.shotsTitle}</h2>
           <div className="-mx-4 sm:mx-0 px-4 sm:px-0 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4">
-            {SHOTS.map((src, i) => (
-              <figure key={src} className="snap-start shrink-0 w-[62%] sm:w-[200px]">
-                <div className="aspect-[720/1463] rounded-2xl overflow-hidden ring-1 ring-white/10 bg-[#0B3C5D]">
-                  <Image src={src} alt={d.shots[i]} width={720} height={1463} className="w-full h-full object-cover object-top" />
-                </div>
-                <figcaption className="mt-2 text-xs text-white/55">{d.shots[i]}</figcaption>
-              </figure>
-            ))}
+            {d.storeShots.map((alt, i) => {
+              const src = `/app-shots/store-${locale === 'fr' ? 'fr' : 'en'}-${i + 1}.jpg`;
+              return (
+                <figure key={src} className="snap-start shrink-0 w-[62%] sm:w-[220px]">
+                  <div className="aspect-[9/16] rounded-2xl overflow-hidden ring-1 ring-white/10 bg-[#0B3C5D]">
+                    <Image src={src} alt={alt} width={720} height={1280} className="w-full h-full object-cover" />
+                  </div>
+                  <figcaption className="mt-2 text-xs text-white/55">{alt}</figcaption>
+                </figure>
+              );
+            })}
           </div>
         </section>
 

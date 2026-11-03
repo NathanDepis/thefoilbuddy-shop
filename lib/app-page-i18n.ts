@@ -11,6 +11,7 @@ type AppPageDict = {
   features: { title: string; body: string }[];
   shotsTitle: string;
   shots: string[];
+  storeShots: string[];
   faqTitle: string;
   faq: { q: string; a: string }[];
   ctaTitle: string;
@@ -56,6 +57,7 @@ const fr: AppPageDict = {
   ],
   shotsTitle: 'Aperçu',
   shots: ['Carte des spots', 'Vent heure par heure sur un spot', 'Comparaison des modèles météo', 'Détail d’une session', 'Vidéo de partage'],
+  storeShots: ['Surf foil : tes vagues, tes stats', 'Wingfoil : tes sauts mesurés', 'Pumpfoil : ton coach IA te débriefe', 'Ta vitesse, en vrai, sur ta vidéo', 'Alertes vent sur tes spots', 'Connecte ton IA', 'Gratuit sur iOS et Android'],
   faqTitle: 'Questions fréquentes',
   faq: [
     { q: 'L’application est-elle gratuite ?', a: 'Oui, TheFoilBuddy se télécharge gratuitement sur l’App Store.' },
@@ -119,6 +121,7 @@ const en: AppPageDict = {
   ],
   shotsTitle: 'Preview',
   shots: ['Spot map', 'Hourly wind on a spot', 'Weather model comparison', 'Session details', 'Share video'],
+  storeShots: ['Surf foil: your waves, your stats', 'Wingfoil: your jumps, measured', 'Pumpfoil: your AI coach debriefs you', 'Your real speed, on your video', 'Wind alerts for your spots', 'Connect your AI', 'Free on iOS and Android'],
   faqTitle: 'FAQ',
   faq: [
     { q: 'Is the app free?', a: 'Yes, TheFoilBuddy is a free download on the App Store.' },
