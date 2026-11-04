@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { localeAlternates, NOINDEX } from '@/lib/seo';
+import { localeAlternates, pageMetadata, SITE_URL } from '@/lib/seo';
+import { productMeta } from '@/lib/seo-meta';
 import { isLocale as _isLocale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -22,7 +23,11 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!_isLocale(locale)) return {};
-  return { alternates: localeAlternates(locale, `/shop/${slug}`) };
+  let decoded = slug;
+  try { decoded = decodeURIComponent(slug); } catch {}
+  const meta = productMeta(locale, decoded);
+  if (!meta) return { alternates: localeAlternates(locale, `/shop/${slug}`) };
+  return pageMetadata(locale, `/shop/${slug}`, meta);
 }
 
 export default async function ProductPage({
@@ -129,8 +134,57 @@ export default async function ProductPage({
     }
   }
 
+  const seo = productMeta(locale, product.slug);
+  const reviewStats = getReviewStats(product.slug);
+  const productUrl = `${SITE_URL}/${locale}/shop/${encodeURIComponent((product.slug ?? '').normalize('NFC'))}`;
+  const productLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: displayName,
+    description: seo?.description ?? displayName,
+    image: galleryImages
+      .filter((m) => m.type !== 'video')
+      .map((m) => (m.url.startsWith('http') ? m.url : `${SITE_URL}${m.url}`))
+      .slice(0, 6),
+    sku: product.sku || product._id,
+    brand: { '@type': 'Brand', name: 'The Foil Buddy' },
+    material: 'Titanium',
+    url: productUrl,
+    ...(product.priceData?.price != null && {
+      offers: {
+        '@type': 'Offer',
+        url: productUrl,
+        price: product.priceData.price.toFixed(2),
+        priceCurrency: product.priceData.currency ?? 'EUR',
+        availability:
+          product.stock?.inStock === false ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
+        itemCondition: 'https://schema.org/NewCondition',
+        seller: { '@type': 'Organization', name: 'The Foil Buddy' },
+        hasMerchantReturnPolicy: {
+          '@type': 'MerchantReturnPolicy',
+          applicableCountry: 'FR',
+          returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+          merchantReturnDays: 14,
+          returnMethod: 'https://schema.org/ReturnByMail',
+        },
+      },
+    }),
+    ...(reviewStats.count > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: reviewStats.average.toFixed(1),
+        reviewCount: reviewStats.count,
+        bestRating: 5,
+      },
+    }),
+  };
+
   return (
     <main className="min-h-screen bg-[#091E2C] text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd).replace(/</g, '\\u003c') }}
+      />
       <div className="max-w-6xl mx-auto px-4 sm:px-8">
         <ShopHeader locale={locale} />
 

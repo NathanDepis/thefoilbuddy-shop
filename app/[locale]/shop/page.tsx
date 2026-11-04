@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { localeAlternates, NOINDEX } from '@/lib/seo';
+import { pageMetadata } from '@/lib/seo';
+import { SHOP_META } from '@/lib/seo-meta';
 import { isLocale as _isLocale } from '@/lib/i18n';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -18,7 +19,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!_isLocale(locale)) return {};
-  return { alternates: localeAlternates(locale, '/shop') };
+  return pageMetadata(locale, '/shop', SHOP_META[locale]);
 }
 
 export default async function ShopPage({

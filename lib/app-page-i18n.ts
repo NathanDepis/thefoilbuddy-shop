@@ -20,9 +20,9 @@ type AppPageDict = {
 };
 
 const fr: AppPageDict = {
-  metaTitle: 'Application TheFoilBuddy — spots, conditions et tracking foil',
+  metaTitle: 'App wingfoil et pumpfoil gratuite : spots, vent, coach IA',
   metaDescription:
-    "L'app TheFoilBuddy (The Foil Buddy) : spots et conditions en temps réel, tracking de session pumpfoil, dockstart, wingfoil, surf foil et downwind, montre Apple Watch / Wear OS, communauté. Gratuite sur iPhone.",
+    "L'app foil gratuite : 250+ spots, vent et marées en direct, GPS de session, sauts, coach IA, montre. Wingfoil, pumpfoil, surf foil. iPhone et Android.",
   kicker: "L'application",
   title: 'TheFoilBuddy, ton compagnon de session foil.',
   intro:
@@ -84,9 +84,9 @@ const fr: AppPageDict = {
 };
 
 const en: AppPageDict = {
-  metaTitle: 'TheFoilBuddy app — foil spots, live conditions and session tracking',
+  metaTitle: 'Free wingfoil & pumpfoil app: spots, wind, GPS, AI coach',
   metaDescription:
-    'The TheFoilBuddy (The Foil Buddy) app: spots and live conditions, session tracking for pumpfoil, dockstart, wingfoil, surf foil and downwind, Apple Watch / Wear OS, community. Free on iPhone.',
+    'TheFoilBuddy, the free foil app: 250+ spots, live wind and tides, GPS tracking, AI coach and watch. Wingfoil, pumpfoil, surf foil. iOS & Android.',
   kicker: 'The app',
   title: 'TheFoilBuddy, your foil session companion.',
   intro:

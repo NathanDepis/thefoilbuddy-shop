@@ -1,4 +1,4 @@
-import { APP_STORE_URL, INSTAGRAM_URL, WEB_APP_URL } from '@/lib/app-store';
+import { APP_STORE_URL, GARMIN_STORE_URL, INSTAGRAM_URL, PLAY_STORE_URL, WEB_APP_URL } from '@/lib/app-store';
 import { SITE_URL } from '@/lib/seo';
 
 /** schema.org MobileApplication + Organization for the TheFoilBuddy app. */
@@ -13,17 +13,17 @@ export default function AppJsonLd({ description, url, inLanguage }: { descriptio
         alternateName: 'TheFoilBuddy',
         url: SITE_URL,
         logo: `${SITE_URL}/logo-hd.png`,
-        sameAs: [INSTAGRAM_URL, APP_STORE_URL],
+        sameAs: [INSTAGRAM_URL, APP_STORE_URL, PLAY_STORE_URL],
       },
       {
-        '@type': 'MobileApplication',
+        '@type': ['SoftwareApplication', 'MobileApplication'],
         '@id': `${SITE_URL}/#app`,
         name: 'TheFoilBuddy',
         alternateName: 'The Foil Buddy',
         description,
         url,
         inLanguage,
-        operatingSystem: 'iOS',
+        operatingSystem: 'iOS, Android, Web',
         applicationCategory: 'SportsApplication',
         image: `${SITE_URL}/app-shots/icon-512.png`,
         screenshot: [
@@ -31,9 +31,9 @@ export default function AppJsonLd({ description, url, inLanguage }: { descriptio
           `${SITE_URL}/app-shots/03-modeles.jpg`,
           `${SITE_URL}/app-shots/04-session.jpg`,
         ],
-        installUrl: APP_STORE_URL,
-        downloadUrl: APP_STORE_URL,
-        sameAs: [APP_STORE_URL, WEB_APP_URL],
+        installUrl: [APP_STORE_URL, PLAY_STORE_URL],
+        downloadUrl: [APP_STORE_URL, PLAY_STORE_URL],
+        sameAs: [APP_STORE_URL, PLAY_STORE_URL, GARMIN_STORE_URL, WEB_APP_URL],
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
         publisher: { '@id': `${SITE_URL}/#organization` },
       },
