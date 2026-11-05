@@ -101,6 +101,8 @@ export default async function Landing({ locale }: { locale: Locale }) {
           <div className="grid md:grid-cols-2 gap-6">
             {/* --- APP CARD --- */}
             <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur hover:border-[#4DB8C7]/50 hover:bg-white/[0.07] transition-all duration-300">
+              {/* Whole card links to /app; inner links/badges sit above it (z-10) */}
+              <Link href={localeHref(locale, '/app')} aria-label={d.app.more} className="absolute inset-0 z-[5] rounded-3xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4DB8C7]" />
               {/* Visual: three phone mockups with real, recent app screens */}
               <div className="relative aspect-square sm:aspect-[4/3] overflow-hidden bg-gradient-to-br from-[#0E4C63] via-[#0B3C5D] to-[#052232] flex items-center justify-center">
                 <div
@@ -127,12 +129,12 @@ export default async function Landing({ locale }: { locale: Locale }) {
                   </div>
                 </div>
 
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#4DB8C7]/15 border border-[#4DB8C7]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#4DB8C7] font-semibold backdrop-blur z-10">
+                <div className="pointer-events-none absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#4DB8C7]/15 border border-[#4DB8C7]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#4DB8C7] font-semibold backdrop-blur z-10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#4DB8C7] animate-pulse" />
                   {d.app.kicker}
                 </div>
                 {stats.spots !== null && (
-                  <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 border border-white/15 px-3 py-1.5 text-[11px] text-white backdrop-blur-md z-10">
+                  <div className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-black/50 border border-white/15 px-3 py-1.5 text-[11px] text-white backdrop-blur-md z-10">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#9ED63A] animate-pulse" />
                     <span className="font-semibold text-[#4DB8C7]">{fmt(stats.spots, '—')}</span>
                     <span className="text-white/60">{d.app.statsSpotsLabel}</span>
@@ -152,7 +154,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto space-y-4">
+                <div className="relative z-10 mt-auto space-y-4">
                   <StoreBadges locale={locale} size="sm" />
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
                     <a
@@ -166,7 +168,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                         <path d="M7 17L17 7M9 7h8v8" />
                       </svg>
                     </a>
-                    <Link href={localeHref(locale, '/app')} className="text-sm text-white/70 underline underline-offset-4 hover:text-white">
+                    <Link href={localeHref(locale, '/app')} className="inline-flex items-center gap-1.5 rounded-full bg-[#4DB8C7] text-[#091E2C] font-bold px-5 py-2.5 text-sm group-hover:shadow-[0_0_24px_rgba(77,184,199,0.45)] transition">
                       {d.app.more}
                     </Link>
                   </div>
@@ -198,7 +200,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                   preload="metadata"
                   aria-hidden
                 />
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#9ED63A]/15 border border-[#9ED63A]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#9ED63A] font-semibold backdrop-blur z-10">
+                <div className="pointer-events-none absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#9ED63A]/15 border border-[#9ED63A]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#9ED63A] font-semibold backdrop-blur z-10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#9ED63A] animate-pulse" />
                   {d.shop.kicker}
                 </div>
@@ -260,7 +262,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#9ED63A]/15 border border-[#9ED63A]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#9ED63A] font-semibold backdrop-blur z-10">
+                <div className="pointer-events-none absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[#9ED63A]/15 border border-[#9ED63A]/40 px-3 py-1 text-[11px] uppercase tracking-widest text-[#9ED63A] font-semibold backdrop-blur z-10">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#9ED63A] animate-pulse" />
                   {d.community.workshopTag}
                 </div>
