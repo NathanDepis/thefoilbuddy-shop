@@ -148,7 +148,7 @@ const en: AppPageDict = {
       title: 'Phone or watch: press start and ride',
       body: 'Record your session from your phone or your smartwatch. GPS track, distance, speed and time on foil are saved, and your whole session history is there to track your progress.',
       points: ['Full GPS track', 'Distance, average and top speed', 'Time on foil, history and progress'],
-      shots: [{ src: '/app-shots/04-session.jpg', alt: 'Session details: duration, distance, speeds, time on foil' }],
+      shots: [{ src: '/app-shots/session-en.jpg', alt: 'Session details: flights, time on foil, top speed' }],
     },
     {
       id: 'stats',
@@ -179,8 +179,8 @@ const en: AppPageDict = {
       body: 'Every spot has its own channel to chat with local riders and say whether it is on. Send private messages, share your sessions and compare yourself on per-spot leaderboards.',
       points: ['Channel per spot and live condition reports', 'Messages between riders', 'Per-spot leaderboards'],
       shots: [
-        { src: '/app-shots/02-spot.jpg', alt: 'Spot channel and hourly wind' },
-        { src: '/app-shots/05-partage.jpg', alt: 'Session sharing' },
+        { src: '/app-shots/community-en.jpg', alt: 'Spot channels' },
+        { src: '/app-shots/v2-live-en.jpg', alt: 'Your speed on your video, ready to share' },
       ],
     },
   ],

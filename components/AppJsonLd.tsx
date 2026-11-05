@@ -26,11 +26,7 @@ export default function AppJsonLd({ description, url, inLanguage }: { descriptio
         operatingSystem: 'iOS, Android, Web',
         applicationCategory: 'SportsApplication',
         image: `${SITE_URL}/app-shots/icon-512.png`,
-        screenshot: [
-          `${SITE_URL}/app-shots/01-carte.jpg`,
-          `${SITE_URL}/app-shots/03-modeles.jpg`,
-          `${SITE_URL}/app-shots/04-session.jpg`,
-        ],
+        screenshot: ['deb', 'stats', 'spot'].map((k) => `${SITE_URL}/app-shots/v2-${k}-${inLanguage === 'fr' ? 'fr' : 'en'}.jpg`),
         installUrl: [APP_STORE_URL, PLAY_STORE_URL],
         downloadUrl: [APP_STORE_URL, PLAY_STORE_URL],
         sameAs: [APP_STORE_URL, PLAY_STORE_URL, GARMIN_STORE_URL, WEB_APP_URL],
